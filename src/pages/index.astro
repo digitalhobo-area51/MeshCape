@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import HopFigure from '../components/HopFigure.astro';
+import Hero from '../components/Hero.astro';
 import RadioTable from '../components/RadioTable.astro';
 import Steps from '../components/Steps.astro';
 import Caution from '../components/Caution.astro';
@@ -10,18 +10,7 @@ import SectionHead from '../components/SectionHead.astro';
 import { site, wiki, wikiSections } from '../data/site';
 ---
 <Base>
-  <section class="split">
-    <div style="flex: 7 1 520px; display: flex; flex-direction: column; gap: 24px">
-      <div class="kicker">§ 1 — What is this</div>
-      <h1 class="h1">Off-grid text messaging for Cape Town, carried radio to radio.</h1>
-      <p class="muted" style="margin: 0; max-width: 620px; font-size: 19px">MeshCore links small, low-power LoRa radios into a mesh. Messages hop from node to node across the peninsula — no cell towers, no internet, no subscriptions. MeshCape is the local community: settings, guides and the people building the network.</p>
-      <div class="row" style="padding-top: 8px">
-        <a class="btn ink" href="/get-started/">Start here →</a>
-        <a class="btn" href={site.wikiUrl}>Open the wiki</a>
-      </div>
-    </div>
-    <HopFigure />
-  </section>
+  <Hero />
 
   <RadioTable />
 

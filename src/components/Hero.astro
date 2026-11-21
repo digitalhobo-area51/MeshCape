@@ -1,0 +1,163 @@
+---
+import { apps, radio, site } from '../data/site';
+---
+<section class="hero box-heavy" aria-labelledby="hero-title">
+  <div class="hero-art">
+    <svg viewBox="0 0 1200 650" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="h-sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0B1626" />
+          <stop offset=".35" stop-color="#1E2342" />
+          <stop offset=".6" stop-color="#5A3A5C" />
+          <stop offset=".78" stop-color="#C96D4C" />
+          <stop offset=".86" stop-color="#F2B27A" />
+        </linearGradient>
+        <linearGradient id="h-sea" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2A2440" />
+          <stop offset="1" stop-color="#0A0F1C" />
+        </linearGradient>
+        <linearGradient id="h-shade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#0B1626" stop-opacity=".9" />
+          <stop offset=".4" stop-color="#0B1626" stop-opacity=".6" />
+          <stop offset=".58" stop-color="#0B1626" stop-opacity="0" />
+        </linearGradient>
+        <filter id="h-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3.5" result="b" />
+          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <filter id="h-cloud" x="-10%" y="-60%" width="120%" height="220%">
+          <feGaussianBlur stdDeviation="7" />
+        </filter>
+        <pattern id="h-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M40 0H0V40" fill="none" stroke="#9FD6E6" stroke-opacity=".07" stroke-width="1" />
+        </pattern>
+      </defs>
+
+      <rect width="1200" height="650" fill="url(#h-sky)" />
+      <g fill="#F3F5EF" opacity=".7">
+        <circle cx="140" cy="60" r="1.2" /><circle cx="300" cy="34" r="1" /><circle cx="460" cy="90" r="1.3" />
+        <circle cx="620" cy="40" r="1" /><circle cx="780" cy="80" r="1.2" /><circle cx="930" cy="30" r="1" />
+        <circle cx="1080" cy="74" r="1.3" /><circle cx="1160" cy="140" r="1" /><circle cx="700" cy="150" r=".9" />
+        <circle cx="1010" cy="190" r="1" /><circle cx="860" cy="210" r=".9" />
+      </g>
+
+      <!-- foothills, city lights, Table Bay (full width) -->
+      <path fill="#1D1830" d="M0 544 L160 532 L320 522 L480 516 L640 520 L800 514 L960 518 L1100 522 L1200 528 L1200 556 L0 556 Z" />
+      <g fill="#FFD68A">
+        <circle cx="40" cy="542" r="1.4" /><circle cx="110" cy="536" r="1.6" /><circle cx="180" cy="531" r="1.4" />
+        <circle cx="250" cy="527" r="1.8" /><circle cx="320" cy="523" r="1.4" /><circle cx="390" cy="520" r="1.6" />
+        <circle cx="460" cy="518" r="1.4" /><circle cx="530" cy="518" r="1.8" /><circle cx="600" cy="520" r="1.4" />
+        <circle cx="670" cy="519" r="1.6" /><circle cx="740" cy="517" r="1.4" /><circle cx="880" cy="516" r="1.4" />
+        <circle cx="1020" cy="520" r="1.4" /><circle cx="1130" cy="523" r="1.6" />
+      </g>
+      <rect y="554" width="1200" height="96" fill="url(#h-sea)" />
+      <g stroke="#F2B27A" stroke-opacity=".35" stroke-width="1.5">
+        <path d="M860 566 H1040" /><path d="M892 578 H1008" /><path d="M920 590 H980" />
+      </g>
+
+      <!-- far range: Devil's Peak, Table Mountain, Lion's Head, Signal Hill -->
+      <g transform="translate(302.5 105) scale(.75)">
+        <path fill="#3A3256" d="M-420 580 L0 566 L264 553 L290 547 L333 530 L452 490 L455 486 L494 448 L520 409 L538 393 L550 396 L563 414 L584 434 L607 438 L624 408 L638 378 L654 367 L685 364 L810 363 L904 363 L929 370 L946 384 L966 418 L989 452 L1011 478 L1028 481 L1044 461 L1058 434 L1075 416 L1092 411 L1110 417 L1124 437 L1136 466 L1153 487 L1200 498 L1200 580 L-420 580 Z" />
+        <g stroke="#2A2446" stroke-width="1.8" opacity=".8">
+        <path d="M670 375 L664 428" /><path d="M709 372 L706 418" /><path d="M756 371 L749 430" />
+        <path d="M802 371 L799 413" /><path d="M849 372 L843 425" /><path d="M896 373 L893 412" />
+      </g>
+        <path filter="url(#h-cloud)" fill="#F3F5EF" opacity=".55" d="M645 376 C670 357 732 351 794 354 C857 351 911 356 939 377 C927 389 903 400 897 418 C880 401 857 395 833 401 C802 390 763 395 732 407 C709 393 670 390 645 376 Z" />
+        <g stroke="#8FE3F2" stroke-width="2" fill="none" filter="url(#h-glow)" opacity=".85">
+          <path d="M545 400 L661 374" /><path d="M661 374 L911 370" /><path d="M911 370 L1099 418" /><path d="M1099 418 L1161 488" />
+          <path d="M545 400 L911 370" stroke-opacity=".35" /><path d="M661 374 L1099 418" stroke-opacity=".35" />
+        </g>
+      </g>
+
+      <!-- mesh down to the city and a boat in the bay -->
+      <g stroke="#8FE3F2" stroke-width="1.5" fill="none" filter="url(#h-glow)" opacity=".85">
+        <path d="M711 405 L700 518" /><path d="M798 386 L820 516" /><path d="M986 383 L960 518" />
+        <path d="M1127 419 L1090 522" /><path d="M1173 471 L1160 525" />
+        <path d="M960 518 L950 582" stroke-dasharray="4 5" />
+      </g>
+      <g filter="url(#h-glow)">
+        <g fill="#0B1626" stroke="#BFF3FB" stroke-width="2">
+          <rect x="705" y="399" width="12" height="12" /><rect x="792" y="380" width="12" height="12" />
+          <rect x="980" y="377" width="12" height="12" /><rect x="1121" y="413" width="12" height="12" />
+          <rect x="1167" y="465" width="12" height="12" />
+        </g>
+        <g fill="#BFF3FB">
+          <circle cx="700" cy="518" r="3.5" /><circle cx="820" cy="516" r="3.5" /><circle cx="960" cy="518" r="3.5" />
+          <circle cx="1090" cy="522" r="3.5" /><circle cx="1160" cy="525" r="3.5" /><circle cx="950" cy="582" r="3.5" />
+        </g>
+      </g>
+      <g class="labels" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11" fill="#DDE8EC" letter-spacing="1">
+        <text x="724" y="432">DEVIL'S PEAK · 1 000 m</text>
+        <text x="808" y="362">TABLE MOUNTAIN · 1 085 m</text>
+        <text x="1046" y="402">LION'S HEAD · 669 m</text>
+        <text x="1074" y="466">SIGNAL HILL</text>
+        <text x="972" y="602" fill="#F2B27A">TABLE BAY</text>
+      </g>
+
+      <rect width="1200" height="650" fill="url(#h-grid)" />
+      <rect width="1200" height="650" fill="url(#h-shade)" />
+    </svg>
+  </div>
+
+  <div class="hero-body">
+    <div class="hero-kicker">{site.name} · South Africa</div>
+    <h1 id="hero-title" class="hero-title">MeshCore Cape Town</h1>
+    <div class="hero-apps">
+      <a class="store" href={apps.android} rel="noopener">
+        <svg width="20" height="22" viewBox="0 0 20 22" aria-hidden="true"><path d="M2 1.5v19l16-9.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /></svg>
+        <span><small>Get it on</small>Google Play</span>
+      </a>
+      <a class="store" href={apps.ios} rel="noopener">
+        <svg width="18" height="24" viewBox="0 0 18 24" aria-hidden="true"><rect x="2" y="1" width="14" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2" /><path d="M7 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+        <span><small>Download on the</small>App Store</span>
+      </a>
+    </div>
+    <p class="hero-lead">MeshCore is a simple, secure, off-grid text-messaging mesh:</p>
+    <ul class="hero-list">
+      <li>Completely independent of the internet and cell networks — it keeps working through load-shedding and outages.</li>
+      <li>Licence-free in South Africa, using ICASA's 868 MHz ISM sub-band ({radio.band}).</li>
+      <li>Community driven and not centrally organised — anyone can join.</li>
+      <li>A fast-growing alternative to Meshtastic, with a very active community.</li>
+    </ul>
+  </div>
+
+  <div class="hero-strip">
+    <span>Fig. 0 — Table Mountain from Table Bay, with repeaters on the peaks</span>
+    <span>NTS</span>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; overflow: hidden; color: #F3F5EF; background: #0B1626; display: flex; flex-direction: column; min-height: 640px; }
+  .hero-art { position: absolute; inset: 0; }
+  .hero-art svg { width: 100%; height: 100%; display: block; }
+  .hero-body { position: relative; flex: 1 1 auto; padding: 56px 48px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 600px; }
+  .hero-kicker { font-family: var(--mono); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #F2B27A; }
+  .hero-title { font-family: var(--cond); font-weight: 700; font-size: 64px; line-height: 1; letter-spacing: -.01em; margin: 0; text-shadow: 0 2px 18px rgba(11, 22, 38, .6); }
+  .hero-apps { display: flex; flex-wrap: wrap; gap: 14px; padding: 6px 0 10px; }
+  .store {
+    display: inline-flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 18px;
+    color: #F3F5EF; text-decoration: none; background: rgba(11, 22, 38, .72);
+    border: 1.5px solid #F3F5EF; font-family: var(--cond); font-size: 20px; font-weight: 600; line-height: 1.05;
+  }
+  .store small { display: block; font-family: var(--mono); font-size: 11px; font-weight: 400; letter-spacing: .06em; }
+  .store:hover { background: #F3F5EF; color: #0B1626; }
+  .hero-lead { margin: 0; font-size: 18px; font-weight: 500; text-shadow: 0 1px 10px rgba(11, 22, 38, .8); }
+  .hero-list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; font-size: 17px; text-shadow: 0 1px 10px rgba(11, 22, 38, .8); }
+  .hero-list li::marker { color: #8FE3F2; }
+  .hero-strip {
+    position: relative; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    padding: 10px 20px; border-top: 1.5px solid rgba(243, 245, 239, .6); background: rgba(11, 22, 38, .78);
+    font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #C9D3CE;
+  }
+  @media (max-width: 760px) {
+    .hero { min-height: 0; }
+    .hero-body { order: 1; padding: 32px 20px 24px; }
+    .hero-title { font-size: 44px; }
+    .hero-art { position: relative; inset: auto; order: 2; aspect-ratio: 1200 / 650; border-top: 1px solid rgba(243, 245, 239, .25); }
+    .hero-art { overflow: hidden; }
+    .hero-art svg { transform: scale(1.75); transform-origin: 100% 88%; }
+    .hero-art .labels { display: none; }
+    .hero-strip { order: 3; }
+  }
+</style>
