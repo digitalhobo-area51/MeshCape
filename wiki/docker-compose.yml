@@ -6,8 +6,9 @@
 #
 # Nothing is published on the host's network ports: the wiki is reached
 # only through the Cloudflare Tunnel (wiki.meshcape.io). For first-time
-# setup on your LAN before the tunnel is live, uncomment the `ports`
-# block under `wiki` and browse to http://<vm-ip>:3000.
+# setup on your LAN before the tunnel is live, add the LAN override:
+#   docker compose -f docker-compose.yml -f docker-compose.lan.yml up -d db wiki
+# and browse to http://<vm-ip>:3000.
 
 services:
   db:
@@ -41,8 +42,6 @@ services:
       DB_USER: wikijs
       DB_PASS: ${DB_PASSWORD}
       DB_NAME: wiki
-    # ports:
-    #   - "3000:3000"
     logging:
       driver: json-file
       options: { max-size: "10m", max-file: "3" }
@@ -54,7 +53,7 @@ services:
       - wiki
     command: tunnel --no-autoupdate run
     environment:
-      TUNNEL_TOKEN: ${TUNNEL_TOKEN:?Set TUNNEL_TOKEN in .env}
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:-}   # set in .env once the tunnel exists (Part 4)
     logging:
       driver: json-file
       options: { max-size: "10m", max-file: "3" }

@@ -57,28 +57,26 @@ sudo mkdir -p /opt/meshcape-wiki && sudo chown $USER: /opt/meshcape-wiki
 cd /opt/meshcape-wiki
 ```
 
-Copy in `docker-compose.yml`, `.env.example` and `backup.sh` from this folder
-of the repo (or `git clone https://github.com/digitalhobo-area51/meshcape.git`
-and copy them out of `wiki/`). Then:
+Get the files from the repo:
 
 ```sh
+git clone https://github.com/digitalhobo-area51/meshcape.git /tmp/meshcape
+cp /tmp/meshcape/wiki/{docker-compose.yml,docker-compose.lan.yml,.env.example,backup.sh} .
 cp .env.example .env
-openssl rand -base64 32          # paste the result as DB_PASSWORD in .env
-nano .env                         # leave TUNNEL_TOKEN for Part 4
+sed -i "s|^DB_PASSWORD=.*|DB_PASSWORD=$(openssl rand -hex 32)|" .env   # random DB password
 ```
 
-For first-time setup before the tunnel exists:
+Start the database and wiki on your LAN only (no tunnel yet):
 
-1. In `docker-compose.yml`, uncomment the two `ports:` lines under `wiki`.
-2. Start only the database and wiki:
-   ```sh
-   docker compose up -d db wiki
-   docker compose logs -f wiki      # wait for "HTTP Server: [ RUNNING ]", then Ctrl+C
-   ```
-3. Browse to `http://<vm-ip>:3000` and complete the setup screen:
-   - **Admin email** and a strong password (save it in your password manager)
-   - **Site URL:** `https://wiki.meshcape.io`
-   - Untick telemetry if you prefer
+```sh
+docker compose -f docker-compose.yml -f docker-compose.lan.yml up -d db wiki
+docker compose logs -f wiki      # wait for "HTTP Server: [ RUNNING ]", then Ctrl+C
+```
+
+Browse to `http://<vm-ip>:3000` and complete the setup screen:
+- **Admin email** and a strong password (save it in your password manager)
+- **Site URL:** `https://wiki.meshcape.io`
+- Untick telemetry if you prefer
 
 ## Part 4 — Cloudflare Tunnel (once meshcape.io is Active)
 
@@ -91,9 +89,11 @@ For first-time setup before the tunnel exists:
 4. Next screen, **Public hostname**:
    - Subdomain: `wiki` · Domain: `meshcape.io`
    - Service type: `HTTP` · URL: `wiki:3000`
-5. On the VM, re-comment the `ports:` lines (the wiki should only be reachable
+5. On the VM, restart without the LAN override (so the wiki is only reachable
    through the tunnel) and start everything:
    ```sh
+   cd /opt/meshcape-wiki
+   docker compose down
    docker compose up -d
    docker compose ps     # db, wiki and tunnel should all be "running"
    ```
