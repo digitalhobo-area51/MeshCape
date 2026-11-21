@@ -85,7 +85,7 @@
     <p class="hero-lead">MeshCore is a simple, secure, off-grid mesh communications system.</p>
     <ul class="hero-list">
       <li>Works without internet or cellular networks — even during load-shedding.</li>
-      <li>Licence-free in South Africa, classified by ICASA as exempt <span class="keep">short&#8209;range devices.</span></li>
+      <li>Licence-free in South Africa, classified by ICASA as exempt short&#8209;range&nbsp;devices.</li>
       <li>Community driven and not centrally organised, everybody can join.</li>
       <li>A fast-growing active community.</li>
     </ul>
@@ -101,19 +101,16 @@
   .hero-art { position: absolute; inset: 0; }
   .hero-art svg { width: 100%; height: 100%; display: block; }
   /* title spacing: equal visible gaps above and left of the title (about 36px desktop, 22px phone);
-     the text below starts where the middle of the old app-store buttons was */
-  .hero-body { position: relative; flex: 1 1 auto; padding: 29px 32px 40px; display: flex; flex-direction: column; gap: 16px; max-width: 620px; }
-  .hero-title { font-family: var(--cond); font-weight: 700; font-size: 56px; line-height: 1; letter-spacing: -.01em; margin: 0 0 43.5px; white-space: nowrap; text-shadow: 0 2px 18px rgba(11, 22, 38, .6); }
+     the text below sits one line (24.8px) higher than where the old app-store buttons' middle was */
+  .hero-body { position: relative; flex: 1 1 auto; padding: 29px 32px 40px; display: flex; flex-direction: column; gap: 16px; max-width: 720px; }
+  .hero-title { font-family: var(--cond); font-weight: 700; font-size: 56px; line-height: 1; letter-spacing: -.01em; margin: 0 0 18.7px; white-space: nowrap; text-shadow: 0 2px 18px rgba(11, 22, 38, .6); }
   .hero-lead { margin: 0; font-size: 16px; font-weight: 500; text-shadow: 0 1px 10px rgba(11, 22, 38, .8); }
   .hero-list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 4px; font-size: 16px; text-shadow: 0 1px 10px rgba(11, 22, 38, .8); }
   .hero-list li::marker { color: #8FE3F2; }
-  /* desktop: wrap before "short-range" so it starts the second line; phones wrap normally */
-  .keep { white-space: nowrap; }
   @media (max-width: 760px) {
     .hero { min-height: 0; border-radius: 18px; }
     .hero-body { order: 1; padding: 18px 20px 24px; }
-    .hero-title { font-size: 32px; margin-bottom: 61px; }
-    .keep { white-space: normal; }
+    .hero-title { font-size: 32px; margin-bottom: 36.2px; }
     .hero-art { position: relative; inset: auto; order: 2; aspect-ratio: 1200 / 650; overflow: hidden; }
     .hero-art svg { transform: scale(1.75); transform-origin: 100% 88%; }
     .hero-art .labels { display: none; }
