@@ -1,0 +1,8 @@
+---
+interface Props { label?: string }
+const { label = 'Caution' } = Astro.props;
+---
+<div class="caution" role="note">
+  <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#A63B0D" stroke-width="2" style="flex: 0 0 auto; margin-top: 2px"><path d="M12 3l10 18H2z"></path><path d="M12 10v5M12 18v.5"></path></svg>
+  <p><strong>{label.toUpperCase()}</strong><slot /></p>
+</div>

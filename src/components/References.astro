@@ -1,0 +1,18 @@
+---
+import { references } from '../data/site';
+---
+<div class="grid-cards" style="gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))">
+  {references.map((r) => r.href ? (
+    <a class="ref" href={r.href} rel="noopener">
+      <span class="kicker" style="font-size: 12px">Ref. {r.id}</span>
+      <span class="ref-title">{r.title}</span>
+      <span class="ref-note">{r.note}</span>
+    </a>
+  ) : (
+    <div class="ref pending">
+      <span class="kicker" style="font-size: 12px">Ref. {r.id}</span>
+      <span class="ref-title">{r.title}</span>
+      <span class="ref-note">{r.note}</span>
+    </div>
+  ))}
+</div>

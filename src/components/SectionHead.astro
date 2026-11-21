@@ -1,0 +1,9 @@
+---
+interface Props { num: string; title: string; linkHref?: string; linkText?: string; level?: 1 | 2 }
+const { num, title, linkHref, linkText, level = 2 } = Astro.props;
+const Tag = level === 1 ? 'h1' : 'h2';
+---
+<div class="sec-head">
+  <Tag class="h2"><span class="sec-num">§ {num}</span>{title}</Tag>
+  {linkHref && <a class="mono" href={linkHref} style="font-size: 14px">{linkText}</a>}
+</div>

@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Steps from '../components/Steps.astro';
+import Caution from '../components/Caution.astro';
+import { site } from '../data/site';
+---
+<Base title="Get started" sheet="02 / 05" description="How to get on the Cape Town MeshCore mesh: get a radio, flash MeshCore, install the app.">
+  <section style="display: flex; flex-direction: column; gap: 28px">
+    <SectionHead num="2" title="Get started" level={1} />
+    <p class="muted" style="margin: 0; max-width: 70ch; font-size: 19px">Three steps take you from a bare board to your first message on the mesh. Detailed, community-tested build notes live in the wiki.</p>
+    <Steps />
+    <Caution>Never power a radio without its antenna connected. Transmitting into nothing can damage the LoRa chip.</Caution>
+  </section>
+
+  <section class="split">
+    <div class="prose" style="flex: 6 1 460px">
+      <h2 class="h3" style="margin-bottom: 12px">Companion or repeater?</h2>
+      <p>A <strong>companion</strong> node pairs with your phone so you can send and receive messages. Start here.</p>
+      <p>A <strong>repeater</strong> sits somewhere high, runs unattended and relays everyone's packets. Repeaters are what make the mesh reach across the city — the wiki's deployment checklist covers siting, power and weatherproofing.</p>
+    </div>
+    <aside class="memo" style="flex: 4 1 300px">
+      <div class="kicker" style="font-size: 12px">Next</div>
+      <p>Apply the community radio settings before you send your first message, so you can hear and be heard.</p>
+      <a class="btn ink" href="/settings/" style="align-self: flex-start; font-size: 14px">Table 1 — settings →</a>
+      <a class="mono" href={site.wikiUrl} style="font-size: 14px">Browse the wiki ↗</a>
+    </aside>
+  </section>
+</Base>

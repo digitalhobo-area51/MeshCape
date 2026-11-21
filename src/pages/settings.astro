@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import RadioTable from '../components/RadioTable.astro';
+import { site } from '../data/site';
+---
+<Base title="Radio settings" sheet="03 / 05" description="The community MeshCore radio preset for Cape Town.">
+  <section style="display: flex; flex-direction: column; gap: 28px">
+    <SectionHead num="3" title="Radio settings" level={1} />
+    <p class="muted" style="margin: 0; max-width: 70ch; font-size: 19px">Every node on the mesh must use the same radio settings to hear each other. Set these in the MeshCore app under your node's radio settings.</p>
+  </section>
+  <RadioTable />
+  <section class="prose">
+    <h2 class="h3" style="margin-bottom: 12px">Why one preset?</h2>
+    <p>LoRa radios only decode packets sent with matching frequency, bandwidth, spreading factor and coding rate. A shared preset keeps the whole Cape Town mesh on one network.</p>
+    <p>Repeater-specific tuning and the reasoning behind the preset are documented in the <a href={site.wikiUrl}>wiki</a>.</p>
+  </section>
+</Base>

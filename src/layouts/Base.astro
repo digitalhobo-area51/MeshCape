@@ -1,0 +1,73 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+import { site, nav } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  sheet: string; // e.g. "01 / 05"
+}
+
+const { title, description = 'MeshCape is the MeshCore community for Cape Town: radio settings, guides and the people building an off-grid LoRa mesh.', sheet } = Astro.props;
+const pageTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.tagline}`;
+const path = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en-ZA">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{pageTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={new URL(path, site.url)} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#16232B" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="frame">
+    <div class="margin" aria-hidden="true"></div>
+    <div class="sheet">
+      <div class="stack">
+        <header class="box-heavy">
+          <div class="titleblock">
+            <a class="brand" href="/" aria-label={`${site.name} home`}>
+              <Logo size={44} />
+              <span><span class="brand-name">MESHCAPE</span><br /><span class="brand-sub">{site.tagline}</span></span>
+            </a>
+            <div class="cell"><div class="label">Project</div><div class="cell-value">Off-grid LoRa mesh</div></div>
+            <div class="cell"><div class="label">Region</div><div class="cell-value">{site.region}</div></div>
+            <div class="cell" style="flex-basis: 110px"><div class="label">Sheet</div><div class="cell-value">{sheet}</div></div>
+            <div class="cell" style="flex-basis: 110px"><div class="label">Rev</div><div class="cell-value" style="color: var(--accent)">{site.revision}</div></div>
+          </div>
+          <nav class="mainnav" aria-label="Main">
+            {nav.map((item) => (
+              <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a>
+            ))}
+            <a href={site.wikiUrl}>Wiki ↗</a>
+            <span class="spacer"></span>
+            <a class="cta" href="/get-started/">Join the mesh →</a>
+          </nav>
+        </header>
+
+        <main id="main" class="stack" style="gap: inherit">
+          <slot />
+        </main>
+
+        <footer class="box-heavy footblock">
+          <div><div class="label">Drawn by</div><div class="cell-value">MeshCape community</div></div>
+          <div><div class="label">Contact</div><div class="cell-value">{site.contact}</div></div>
+          <div><div class="label">Content licence</div><div class="cell-value">{site.contentLicence}</div></div>
+          <div><div class="label">Doc</div><div class="cell-value">meshcape.io · © {new Date().getFullYear()}</div></div>
+        </footer>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

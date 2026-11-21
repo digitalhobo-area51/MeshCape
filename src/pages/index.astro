@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import HopFigure from '../components/HopFigure.astro';
+import RadioTable from '../components/RadioTable.astro';
+import Steps from '../components/Steps.astro';
+import Caution from '../components/Caution.astro';
+import SignalPath from '../components/SignalPath.astro';
+import References from '../components/References.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { site, wikiSections } from '../data/site';
+---
+<Base sheet="01 / 05">
+  <section class="split">
+    <div style="flex: 7 1 520px; display: flex; flex-direction: column; gap: 24px">
+      <div class="kicker">§ 1 — What is this</div>
+      <h1 class="h1">Off-grid text messaging for Cape Town, carried radio to radio.</h1>
+      <p class="muted" style="margin: 0; max-width: 620px; font-size: 19px">MeshCore links small, low-power LoRa radios into a mesh. Messages hop from node to node across the peninsula — no cell towers, no internet, no subscriptions. MeshCape is the local community: settings, guides and the people building the network.</p>
+      <div class="row" style="padding-top: 8px">
+        <a class="btn ink" href="/get-started/">Start here →</a>
+        <a class="btn" href={site.wikiUrl}>Open the wiki</a>
+      </div>
+    </div>
+    <HopFigure />
+  </section>
+
+  <RadioTable />
+
+  <section style="display: flex; flex-direction: column; gap: 28px">
+    <SectionHead num="2" title="Get on the mesh in three steps" linkHref="/get-started/" linkText="Full guide →" />
+    <Steps />
+    <Caution>Never power a radio without its antenna connected. Transmitting into nothing can damage the LoRa chip.</Caution>
+  </section>
+
+  <section class="split" style="align-items: center">
+    <div style="flex: 5 1 380px; display: flex; flex-direction: column; gap: 18px">
+      <div class="kicker">§ 3 — Mesh meets Home Assistant</div>
+      <h2 class="h2">Bring the mesh into your smart home.</h2>
+      <p class="muted" style="margin: 0">A Wi-Fi-connected MeshCore node can feed Home Assistant: log channel messages, watch node battery and signal, or trigger automations from the mesh.</p>
+      <a class="btn ink" href="/home-assistant/" style="align-self: flex-start">How it works →</a>
+    </div>
+    <SignalPath />
+  </section>
+
+  <section class="split">
+    <div class="contents" style="flex: 6 1 460px; display: flex; flex-direction: column">
+      <div class="kicker" style="margin-bottom: 14px">§ 4 — Written by the community</div>
+      <h2 class="h2" style="margin-bottom: 20px">Contents of the wiki</h2>
+      {wikiSections.map((s, i) => (
+        <a href={site.wikiUrl}><span class="n">{String(i + 1).padStart(2, '0')}</span><span>{s}</span><span class="leader" aria-hidden="true"></span><span aria-hidden="true">→</span></a>
+      ))}
+    </div>
+    <aside class="memo" style="flex: 4 1 320px">
+      <div class="kicker" style="font-size: 12px">Memo</div>
+      <h3 class="h3" style="font-size: 28px">Know something? Write it down.</h3>
+      <p>Anyone can contribute. Create a MeshCape account on the wiki and edit straight away — no GitHub or other sign-ups needed.</p>
+      <a class="btn ink" href={site.wikiUrl} style="align-self: flex-start; font-size: 14px">wiki.meshcape.io →</a>
+    </aside>
+  </section>
+
+  <section id="links" style="display: flex; flex-direction: column; gap: 24px">
+    <SectionHead num="5" title="References" linkHref="/links/" linkText="All links →" />
+    <References />
+  </section>
+</Base>

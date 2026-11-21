@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import SignalPath from '../components/SignalPath.astro';
+import Caution from '../components/Caution.astro';
+import { site } from '../data/site';
+---
+<Base title="Home Assistant" sheet="04 / 05" description="Connecting a MeshCore node to Home Assistant.">
+  <section style="display: flex; flex-direction: column; gap: 28px">
+    <SectionHead num="4" title="Mesh meets Home Assistant" level={1} />
+    <div class="split" style="align-items: center">
+      <div class="prose" style="flex: 5 1 380px">
+        <p style="font-size: 19px">A MeshCore node on your Wi-Fi can talk to Home Assistant over TCP. From there the mesh becomes just another source of sensors and events.</p>
+        <ul>
+          <li>Log public-channel and direct messages</li>
+          <li>Track node battery, signal and last-heard times</li>
+          <li>Trigger automations from mesh messages</li>
+        </ul>
+      </div>
+      <SignalPath />
+    </div>
+  </section>
+  <Caution label="Privacy">When sharing your setup, leave out local IP addresses, tokens and your node's exact location.</Caution>
+  <section class="memo" style="transform: none">
+    <div class="kicker" style="font-size: 12px">Build notes</div>
+    <p>The step-by-step integration guide — firmware, network setup and Home Assistant configuration — lives in the wiki so the community can keep it current.</p>
+    <a class="btn ink" href={site.wikiUrl} style="align-self: flex-start; font-size: 14px">Read the guide ↗</a>
+  </section>
+</Base>
