@@ -42,10 +42,12 @@ img, svg { max-width: 100%; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* Page sheet */
-.sheet { padding: 40px 48px 24px; flex: 1 0 auto; display: flex; flex-direction: column; }
+.sheet { padding: 40px 40px 24px; flex: 1 0 auto; display: flex; flex-direction: column; }
 .sheet > .stack { flex: 1 0 auto; width: 100%; }
 .sheet > .stack > main { flex: 1 0 auto; }
-.stack { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 72px; }
+/* Content runs edge to edge with 40px margins, the same as the gaps between sections.
+   Capped at 1840px (a 1920px screen) so the hero picture never gets cropped on very wide monitors. */
+.stack { max-width: 1840px; margin: 0 auto; display: flex; flex-direction: column; gap: 72px; }
 
 /* Boxes */
 .box { border: 1.5px solid var(--ink); background: var(--paper-raised); }
