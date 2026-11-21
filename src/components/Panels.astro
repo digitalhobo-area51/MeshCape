@@ -1,28 +1,46 @@
 ---
-// Three equal content panels under the radio table. Placeholder text for now.
-const panels = [
-  { title: 'Example heading', body: 'This is example text to show how content will look in this panel. It will be replaced with the real content later.' },
-  { title: 'Example heading', body: 'This is example text to show how content will look in this panel. It will be replaced with the real content later.' },
-  { title: 'Example heading', body: 'This is example text to show how content will look in this panel. It will be replaced with the real content later.' },
-];
+// Three equal content panels under the radio table.
+const mapUrl = 'https://map.meshcore.io/?lat=-33.5379&lon=19.2532&zoom=8';
 ---
 <section class="panels" aria-label="Highlights">
-  {panels.map((p) => (
-    <article class="panel">
-      <h2 class="panel-title">{p.title}</h2>
-      <p class="panel-body">{p.body}</p>
-    </article>
-  ))}
+  <a class="panel panel-link panel-logo" href="https://meshcore.io/" target="_blank" rel="noopener">
+    <span class="logo" aria-hidden="true">MeshCore</span>
+    <span class="panel-body">Official Global MeshCore Site</span>
+  </a>
+
+  <article class="panel">
+    <h2 class="panel-title">Local community wiki</h2>
+    <p class="panel-body">Engage with the local community and share experiences in the mesh.</p>
+  </article>
+
+  <a class="panel panel-link" href={mapUrl} target="_blank" rel="noopener">
+    <h2 class="panel-title">Map</h2>
+    <p class="panel-body">Official MeshCore map showing nodes in the area.</p>
+  </a>
 </section>
 <style>
   /* Same gap above as between the hero and the table (40px desktop, 24px phone), and the same gap between panels.
      The page stack puts 72px / 56px between sections, so pull up by 32px. */
   .panels { margin-top: -32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-  .panel { background: var(--ink); color: var(--paper); border-radius: 24px; padding: 32px; min-height: 260px; display: flex; flex-direction: column; gap: 12px; }
+  .panel { background: var(--ink); color: var(--paper); border-radius: 24px; padding: 32px; min-height: 260px; display: flex; flex-direction: column; gap: 12px; text-decoration: none; }
   .panel-title { font-family: var(--cond); font-size: 26px; font-weight: 700; line-height: 1.15; margin: 0; }
   .panel-body { margin: 0; font-size: 16px; line-height: 1.55; }
+
+  /* Whole-box links: lift and lighten on hover / keyboard focus */
+  .panel-link { transition: background .15s ease, transform .15s ease, box-shadow .15s ease; }
+  .panel-link:hover, .panel-link:focus-visible { color: var(--paper); background: #24363F; transform: translateY(-3px); box-shadow: 0 12px 32px rgba(17, 24, 39, .22); }
+  .panel-link:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  /* First box: name centred in the top two thirds, caption in the bottom third */
+  .panel-logo { display: grid; grid-template-rows: 2fr 1fr; align-items: center; justify-items: center; text-align: center; }
+  .logo { font-family: var(--cond); font-size: 46px; font-weight: 700; letter-spacing: .02em; line-height: 1; }
+  .panel-logo .panel-body { align-self: end; }
+
+  @media (prefers-reduced-motion: reduce) { .panel-link { transition: none; } .panel-link:hover, .panel-link:focus-visible { transform: none; } }
   @media (max-width: 760px) {
     .panels { grid-template-columns: 1fr; gap: 24px; }
     .panel { border-radius: 18px; padding: 22px 20px; min-height: 0; }
+    .panel-logo { min-height: 180px; }
+    .logo { font-size: 38px; }
   }
 </style>
