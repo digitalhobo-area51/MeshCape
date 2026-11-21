@@ -36,18 +36,16 @@ npm run dev       # http://localhost:4321
 npm run build     # outputs to dist/
 ```
 
-## Deploying (Cloudflare Pages)
+## Deploying (Cloudflare Workers)
 
-Connect this repo in Cloudflare Pages with:
+The site deploys as a static-assets-only Cloudflare Worker, configured in `wrangler.jsonc` (no server code, no bindings). The Worker `meshcape` is connected to this repo with Workers Builds:
 
 | Setting | Value |
 | --- | --- |
-| Framework preset | Astro |
 | Build command | `npm run build` |
-| Output directory | `dist` |
-| Environment variable | `NODE_VERSION` = `22` |
+| Deploy command | `npx wrangler deploy` |
 
-Every push to `main` deploys automatically. Then add `meshcape.io` (and `www`) under **Custom domains**.
+Every push to `main` deploys automatically to https://meshcape.digitalhobo.workers.dev. Custom domains (`meshcape.io`, `www.meshcape.io`) are added on the Worker under **Settings → Domains & Routes**.
 
 ## Licences
 
