@@ -32,7 +32,7 @@ export const nav: { href: string; label: string; external?: boolean }[] = [
   { href: '/', label: 'Home' },
   { href: '/#get-started', label: 'Get Started' },
   { href: 'https://meshcore.io/', label: 'Official MeshCore Site', external: true },
-  { href: 'https://wiki.meshcape.io', label: 'Local Community Site', external: true },
+  { href: 'https://wiki.meshcape.io', label: 'Local Community Wiki', external: true },
   { href: 'https://map.meshcore.io/?lat=-33.5379&lon=19.2532&zoom=8', label: 'Dynamic Mesh Map', external: true },
 ];
 
