@@ -55,8 +55,11 @@ img, svg { max-width: 100%; }
 
 /* Top bar: wordmark + menu */
 .topbar { position: sticky; top: 0; z-index: 50; background: var(--navy); }
-.topbar-inner { max-width: 1296px; margin: 0 auto; padding: 10px 48px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.wordmark { font-family: 'Exo 2', var(--cond); font-style: italic; font-size: 30px; font-weight: 800; letter-spacing: .03em; color: var(--paper); text-decoration: none; line-height: 1.2; }
+/* Equal spacing: the gap above, below and left of the letters = --bar-pad;
+   the menu button sits --bar-pad from the right, centred vertically. */
+.topbar { --bar-pad: 24px; --cap: 21px; }
+.topbar-inner { height: calc(var(--cap) + 2 * var(--bar-pad)); padding: 0 var(--bar-pad); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.wordmark { display: block; font-family: 'Exo 2', var(--cond); font-style: italic; font-size: 30px; font-weight: 800; letter-spacing: .03em; color: var(--paper); text-decoration: none; line-height: 1; position: relative; top: var(--nudge, -2px); }
 .wordmark:hover { color: #FFFFFF; }
 
 .menu { position: relative; }
@@ -162,8 +165,9 @@ a.ref:hover .kicker { color: #F0A37E; }
 .footblock .cell-value { font-size: 14px; font-weight: 400; }
 
 @media (max-width: 760px) {
-  .topbar-inner { padding: 8px 16px; }
+  .topbar { --bar-pad: 16px; --cap: 17px; --nudge: -1px; }
   .wordmark { font-size: 24px; }
+  .menu-btn { width: 40px; height: 40px; }
   .sheet { padding: 24px 16px 48px; }
   .stack { gap: 56px; }
   .h1 { font-size: 40px; }
