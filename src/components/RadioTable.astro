@@ -1,9 +1,8 @@
 ---
 import { radio } from '../data/site';
-const copyText = `MeshCore preset ${radio.appPreset}: Freq ${radio.frequencyMHz} MHz | BW ${radio.bandwidthKHz} kHz | SF ${radio.spreadingFactor} | CR ${radio.codingRate}`;
 ---
-<section id="settings" class="box-heavy" aria-labelledby="table1">
-  <div class="box-head ink"><span id="table1">Table 1 — South Africa MeshCore radio settings</span><span>App preset: {radio.appPreset}</span></div>
+<section id="settings" class="box-heavy radio-card" aria-labelledby="table1">
+  <div class="box-head ink"><span id="table1">South African MeshCore radio settings</span><span>App preset: {radio.appPreset}</span></div>
   <div class="spec">
     <div><div class="label">Frequency</div><div class="spec-value">{radio.frequencyMHz} <span class="spec-unit">MHz</span></div></div>
     <div><div class="label">Bandwidth</div><div class="spec-value">{radio.bandwidthKHz} <span class="spec-unit">kHz</span></div></div>
@@ -11,26 +10,18 @@ const copyText = `MeshCore preset ${radio.appPreset}: Freq ${radio.frequencyMHz}
     <div><div class="label">Coding rate</div><div class="spec-value">CR {radio.codingRate} <span class="spec-unit">({radio.codingRateRatio})</span></div></div>
     <div><div class="label">Duty cycle</div><div class="spec-value">{radio.dutyCycle}</div></div>
   </div>
-  <div class="row" style="align-items: center; justify-content: space-between; padding: 16px 22px">
-    {radio.confirmed
-      ? <p class="mono" style="margin: 0; font-size: 13px; color: var(--ink-2); max-width: 760px">In the MeshCore app, choose the <strong>{radio.appPreset}</strong> preset. Sits inside ICASA's licence-free 868 MHz ISM sub-band ({radio.band}).</p>
-      : <p class="mono" style="margin: 0; font-size: 13px; color: var(--accent); max-width: 760px">▲ NOTE: community preset still to be agreed. Values must sit inside ICASA's licence-exempt 868 MHz rules.</p>}
-    <button type="button" class="btn small" data-copy={copyText} disabled={!radio.confirmed}>Copy settings</button>
-  </div>
 </section>
-<script>
-  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(btn.dataset.copy ?? '');
-        const old = btn.textContent;
-        btn.textContent = 'Copied ✓';
-        setTimeout(() => (btn.textContent = old), 1600);
-      } catch { /* clipboard unavailable */ }
-    });
-  });
-</script>
 <style>
-  button[disabled] { opacity: .5; cursor: not-allowed; }
-  .spec-value .spec-unit strong { font-weight: 600; }
+  /* Rounded card to match the hero; the outer border comes from .box-heavy */
+  .radio-card { border-radius: 24px; overflow: hidden; }
+  /* Cells draw only top/left dividers; the -1px offset tucks the left edge under the card border,
+     so there is no doubled line along the bottom, even when cells wrap onto several rows */
+  .radio-card .spec { margin: 0 0 0 -1px; }
+  .radio-card .spec > div { border-right: none; border-bottom: none; border-left: 1px solid var(--ink); border-top: 1px solid var(--ink); }
+  @media (max-width: 760px) {
+    .radio-card { border-radius: 18px; }
+    /* two columns on phones; the odd last cell spans the row so its top line runs full width */
+    .radio-card .spec { grid-template-columns: 1fr 1fr; }
+    .radio-card .spec > div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  }
 </style>
