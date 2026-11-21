@@ -1,9 +1,11 @@
 # LAN-only override for first-time setup, before the Cloudflare Tunnel exists.
-# Publishes Wiki.js on http://<vm-ip>:3000. Stop using it once the tunnel is live.
+# Publishes Wiki.js on http://<vm-ip>:3080 (3080 rather than 3000, which other
+# apps such as Grafana often use). Change it with WIKI_LAN_PORT in .env.
+# Stop using this file once the tunnel is live.
 #
 #   docker compose -f docker-compose.yml -f docker-compose.lan.yml up -d db wiki
 
 services:
   wiki:
     ports:
-      - "3000:3000"
+      - "${WIKI_LAN_PORT:-3080}:3000"

@@ -8,7 +8,15 @@
 # only through the Cloudflare Tunnel (wiki.meshcape.io). For first-time
 # setup on your LAN before the tunnel is live, add the LAN override:
 #   docker compose -f docker-compose.yml -f docker-compose.lan.yml up -d db wiki
-# and browse to http://<vm-ip>:3000.
+# and browse to http://<vm-ip>:3080.
+#
+# Built to share a VM with other services:
+# - Everything is namespaced under the project name "meshcape-wiki"
+#   (containers, network and volume), so nothing clashes with other stacks.
+# - Memory and CPU are capped so the wiki can never starve its neighbours.
+# - Postgres is NOT published on the host, so an existing Postgres is unaffected.
+
+name: meshcape-wiki
 
 services:
   db:
@@ -25,6 +33,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    mem_limit: 512m
+    cpus: 1.0
     logging:
       driver: json-file
       options: { max-size: "10m", max-file: "3" }
@@ -42,6 +52,8 @@ services:
       DB_USER: wikijs
       DB_PASS: ${DB_PASSWORD}
       DB_NAME: wiki
+    mem_limit: 768m
+    cpus: 1.0
     logging:
       driver: json-file
       options: { max-size: "10m", max-file: "3" }
@@ -54,6 +66,8 @@ services:
     command: tunnel --no-autoupdate run
     environment:
       TUNNEL_TOKEN: ${TUNNEL_TOKEN:-}   # set in .env once the tunnel exists (Part 4)
+    mem_limit: 128m
+    cpus: 0.5
     logging:
       driver: json-file
       options: { max-size: "10m", max-file: "3" }

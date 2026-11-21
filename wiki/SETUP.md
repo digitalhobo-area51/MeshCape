@@ -1,10 +1,11 @@
 # MeshCape wiki — setup guide
 
-How to run **wiki.meshcape.io** on a VM on the home ESXi host, at zero cost.
+How to run **wiki.meshcape.io** on an **existing** Linux VM on the home ESXi
+host, alongside what already runs there, at zero cost.
 
 ```
 Internet ──► Cloudflare (wiki.meshcape.io) ══ tunnel ══► cloudflared ──► Wiki.js ──► PostgreSQL
-                                                         └────────── Ubuntu VM on ESXi ──────────┘
+                                                         └──────── existing VM on ESXi ────────┘
 ```
 
 - **No ports opened** on the home router and the home IP stays hidden — the
@@ -16,32 +17,49 @@ Internet ──► Cloudflare (wiki.meshcape.io) ══ tunnel ══► cloudfl
 
 > **Blocked until the domain is on Cloudflare.** Parts 1–3 can be done now.
 > Part 4 (the tunnel) needs `meshcape.io` active on Cloudflare first.
+>
+> **Shared VM rule:** every step below either only reads, or only touches
+> things named `meshcape-wiki`. Nothing here restarts Docker, changes other
+> containers or prunes anything shared.
 
 ---
 
-## Part 1 — Create the VM on ESXi
+## Part 1 — Pre-flight check on the existing VM (read-only)
 
-1. Download the **Ubuntu Server 24.04 LTS** ISO and upload it to a datastore
-   (ESXi host client → *Storage* → *Datastore browser* → *Upload*).
-2. *Virtual Machines* → *Create / Register VM* → *Create a new virtual machine*.
-   - Name: `meshcape-wiki`
-   - Guest OS: Linux → Ubuntu Linux (64-bit)
-   - **2 vCPU, 4 GB RAM, 32 GB disk** (thin provisioned is fine)
-   - Network: your LAN port group
-   - CD/DVD: *Datastore ISO file* → the Ubuntu ISO, *Connect at power on*
-3. Power on, open the console and install Ubuntu:
-   - Choose a **static IP** (or set a DHCP reservation on the router)
-   - Tick **Install OpenSSH server**
-   - Skip the optional snaps
-4. After reboot, disconnect the ISO and SSH in from your PC:
+The wiki adds three small containers (Wiki.js, PostgreSQL, cloudflared),
+capped at about **1.4 GB RAM** and **2.5 CPUs** in total, and needs 3–5 GB of
+disk. Before adding anything, check the VM can take it.
+
+1. Take an **ESXi snapshot** of the VM first (host client → the VM →
+   *Actions → Snapshots → Take snapshot*, name it `before-meshcape-wiki`).
+   It's your one-click undo. Delete it a few days after everything works,
+   because snapshots slow a VM down if left for long.
+2. SSH in as your normal user and run the check. It installs and changes
+   nothing:
    ```sh
-   ssh <your-user>@<vm-ip>
-   sudo apt update && sudo apt full-upgrade -y
-   sudo apt install -y open-vm-tools unattended-upgrades
-   sudo timedatectl set-timezone Africa/Johannesburg
+   curl -fsSL https://raw.githubusercontent.com/digitalhobo-area51/meshcape/main/wiki/preflight.sh -o /tmp/preflight.sh
+   less /tmp/preflight.sh                    # read it first if you like
+   bash /tmp/preflight.sh | tee ~/meshcape-preflight-before.txt
+   docker ps --format '{{.Names}}' | sort > ~/containers-before.txt   # baseline list
    ```
+3. If it ends with **No warnings**, carry on. If there are warnings, send
+   the output to Claude before going further. It checks:
+   - free memory and disk, and current CPU load
+   - whether Docker and `docker compose` are already there and usable
+   - which containers are running now (your baseline for afterwards)
+   - that nothing called `meshcape` exists yet (no name clashes)
+   - that the setup port (3080) is free on the VM
+   - firewall state and any failed services (another baseline)
 
-## Part 2 — Install Docker
+## Part 2 — Docker (only if the pre-flight says it's missing)
+
+**If Docker is already installed, skip this part.** Don't reinstall or
+upgrade it: that restarts the Docker service and with it every container on
+the VM.
+
+If Docker is missing, stop and check with Claude first. Installing it on a
+shared VM adds firewall (iptables) rules and a background service, which can
+matter if the VM runs a firewall or other network services. If it's agreed:
 
 ```sh
 curl -fsSL https://get.docker.com | sudo sh
@@ -50,21 +68,28 @@ exit   # log out and SSH back in so the group change applies
 docker compose version   # should print a version
 ```
 
+If Docker is installed but you need `sudo` for every command, either keep
+using `sudo docker ...` for the steps below, or add yourself to the group
+(`sudo usermod -aG docker $USER`, then log out and back in). That changes
+nothing for running containers.
+
 ## Part 3 — Start Wiki.js (LAN only for now)
+
+Everything goes in its own folder, and Compose names every container, the
+network and the volume `meshcape-wiki`, so nothing touches other stacks.
 
 ```sh
 sudo mkdir -p /opt/meshcape-wiki && sudo chown $USER: /opt/meshcape-wiki
 cd /opt/meshcape-wiki
-```
-
-Get the files from the repo:
-
-```sh
-git clone https://github.com/digitalhobo-area51/meshcape.git /tmp/meshcape
-cp /tmp/meshcape/wiki/{docker-compose.yml,docker-compose.lan.yml,.env.example,backup.sh} .
+for f in docker-compose.yml docker-compose.lan.yml .env.example backup.sh preflight.sh; do
+  curl -fsSLO "https://raw.githubusercontent.com/digitalhobo-area51/meshcape/main/wiki/$f"
+done
 cp .env.example .env
 sed -i "s|^DB_PASSWORD=.*|DB_PASSWORD=$(openssl rand -hex 32)|" .env   # random DB password
 ```
+
+If the pre-flight said port 3080 is taken, set another free port:
+`sed -i 's/^WIKI_LAN_PORT=.*/WIKI_LAN_PORT=3081/' .env`.
 
 Start the database and wiki on your LAN only (no tunnel yet):
 
@@ -73,10 +98,35 @@ docker compose -f docker-compose.yml -f docker-compose.lan.yml up -d db wiki
 docker compose logs -f wiki      # wait for "HTTP Server: [ RUNNING ]", then Ctrl+C
 ```
 
-Browse to `http://<vm-ip>:3000` and complete the setup screen:
+**Check nothing else was disturbed:**
+
+```sh
+docker ps --format '{{.Names}}' | grep -v meshcape | sort | diff ~/containers-before.txt - \
+  && echo "OK: every other container is still running"
+docker stats --no-stream         # meshcape-wiki containers stay under their limits
+free -m                          # memory still comfortable
+```
+
+If `diff` prints anything, a container that was running before isn't
+running now: stop here and use the undo below.
+
+Browse to `http://<vm-ip>:3080` and complete the setup screen:
 - **Admin email** and a strong password (save it in your password manager)
 - **Site URL:** `https://wiki.meshcape.io`
 - Untick telemetry if you prefer
+
+### Undo (if anything looks wrong)
+
+This removes only the wiki and its data, nothing else:
+
+```sh
+cd /opt/meshcape-wiki
+docker compose -f docker-compose.yml -f docker-compose.lan.yml down -v
+cd / && sudo rm -rf /opt/meshcape-wiki
+```
+
+Or revert to the `before-meshcape-wiki` snapshot in ESXi. Note that this also
+rolls back anything else that changed on the VM since the snapshot.
 
 ## Part 4 — Cloudflare Tunnel (once meshcape.io is Active)
 
@@ -179,18 +229,21 @@ crontab -e
 15 2 * * * /opt/meshcape-wiki/backup.sh >> /opt/meshcape-wiki/backup.log 2>&1
 ```
 
-Also snapshot or back up the VM from ESXi occasionally. Keep the host on a UPS
-if you can — the wiki goes offline during load-shedding otherwise (content is
-safe in GitHub either way).
+Backups go to `/opt/meshcape-wiki/backups`, and any older than 14 days are
+deleted so they can't fill the disk. Also back up the VM from ESXi now and
+then. Keep the host on a UPS if you can — the wiki goes offline during
+load-shedding otherwise (content is safe in GitHub either way).
 
 Updating Wiki.js and the tunnel:
 
 ```sh
 cd /opt/meshcape-wiki
 ./backup.sh
-docker compose pull && docker compose up -d
-docker image prune -f
+docker compose pull && docker compose up -d   # only recreates meshcape-wiki containers
 ```
+
+Don't run `docker system prune` or `docker volume prune` on a shared VM: they
+act on every stack, not just the wiki.
 
 ## Moderation checklist
 
