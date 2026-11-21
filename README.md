@@ -14,17 +14,17 @@ src/data/site.ts
 
 The radio preset is the South African EU/UK (Narrow) preset — 869.618 MHz, BW 62.5 kHz, SF8, CR8, 10% duty cycle — inside ICASA's licence-free 869.4–869.65 MHz sub-band. Setting `radio.confirmed` to `false` shows a "still to be agreed" note instead and disables **Copy settings**.
 
-`nav` order also sets each page's "Sheet 0x / 0n" number in the header.
+`nav` sets the pages listed in the header menu (top right), in order.
 
 ## Project layout
 
 ```
 src/
   data/site.ts        values used across the site
-  layouts/Base.astro  page frame: title-block header, nav, footer
+  layouts/Base.astro  page frame: MESHCAPE.IO top bar with dropdown menu, footer
   components/         figures, tables, cards
   pages/              one file per page (index, get-started, settings, home-assistant, community, links, 404)
-  styles/global.css   notebook theme (grid paper, margin rule, drafting borders)
+  styles/global.css   notebook theme (paper colour, drafting borders, callouts)
 public/               favicon, social preview image (og.png), robots.txt
 wiki/                 wiki.meshcape.io: Docker Compose, setup guide, backups
   seed/               starter wiki pages (Wiki.js Git-storage format)

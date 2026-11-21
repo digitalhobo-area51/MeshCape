@@ -1,20 +1,15 @@
 ---
 import '../styles/global.css';
-import Logo from '../components/Logo.astro';
 import { site, nav } from '../data/site';
 
 interface Props {
   title?: string;
   description?: string;
-  sheet?: string; // overrides the automatic "01 / 06" number
 }
 
 const { title, description = 'MeshCape is the MeshCore community for Cape Town: radio settings, guides and the people building an off-grid LoRa mesh.' } = Astro.props;
 const pageTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.tagline}`;
 const path = Astro.url.pathname;
-const pad = (n: number) => String(n).padStart(2, '0');
-const navIndex = nav.findIndex((item) => item.href === path);
-const sheet = Astro.props.sheet ?? (navIndex >= 0 ? `${pad(navIndex + 1)} / ${pad(nav.length)}` : `— / ${pad(nav.length)}`);
 const ogImage = new URL('/og.png', site.url);
 ---
 <!doctype html>
@@ -43,31 +38,26 @@ const ogImage = new URL('/og.png', site.url);
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="frame">
-    <div class="margin" aria-hidden="true"></div>
-    <div class="sheet">
-      <div class="stack">
-        <header class="box-heavy">
-          <div class="titleblock">
-            <a class="brand" href="/" aria-label={`${site.name} home`}>
-              <Logo size={44} />
-              <span><span class="brand-name">MESHCAPE</span><br /><span class="brand-sub">{site.tagline}</span></span>
-            </a>
-            <div class="cell"><div class="label">Project</div><div class="cell-value">Off-grid LoRa mesh</div></div>
-            <div class="cell"><div class="label">Region</div><div class="cell-value">{site.region}</div></div>
-            <div class="cell" style="flex-basis: 110px"><div class="label">Sheet</div><div class="cell-value">{sheet}</div></div>
-            <div class="cell" style="flex-basis: 110px"><div class="label">Rev</div><div class="cell-value" style="color: var(--accent)">{site.revision}</div></div>
-          </div>
-          <nav class="mainnav" aria-label="Main">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="wordmark" href="/">MESHCAPE.IO</a>
+      <div class="menu" data-menu>
+        <button class="menu-btn" type="button" aria-label="Menu" aria-haspopup="true" aria-expanded="false" aria-controls="site-menu">
+          <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+        </button>
+        <nav id="site-menu" class="menu-panel" aria-label="Main">
+          <ul>
             {nav.map((item) => (
-              <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a>
+              <li><a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a></li>
             ))}
-            <a href={site.wikiUrl}>Wiki ↗</a>
-            <span class="spacer"></span>
-            <a class="cta" href="/get-started/">Join the mesh →</a>
-          </nav>
-        </header>
-
+            <li><a href={site.wikiUrl}>Wiki ↗</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <div class="sheet">
+      <div class="stack">
         <main id="main" class="stack" style="gap: inherit; margin: 0; width: 100%; max-width: none">
           <slot />
         </main>
@@ -79,7 +69,17 @@ const ogImage = new URL('/og.png', site.url);
           <div><div class="label">Doc</div><div class="cell-value">meshcape.io · © {new Date().getFullYear()}</div></div>
         </footer>
       </div>
-    </div>
   </div>
+  <script>
+    document.querySelectorAll<HTMLElement>('[data-menu]').forEach((menu) => {
+      const btn = menu.querySelector<HTMLButtonElement>('.menu-btn')!;
+      const set = (open: boolean) => { menu.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); };
+      btn.addEventListener('click', () => set(!menu.classList.contains('open')));
+      menu.addEventListener('mouseenter', () => btn.setAttribute('aria-expanded', 'true'));
+      menu.addEventListener('mouseleave', () => { if (!menu.classList.contains('open')) btn.setAttribute('aria-expanded', 'false'); });
+      document.addEventListener('click', (e) => { if (!menu.contains(e.target as Node)) set(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { set(false); btn.focus(); } });
+    });
+  </script>
 </body>
 </html>
