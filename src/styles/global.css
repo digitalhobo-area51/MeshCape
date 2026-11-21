@@ -57,9 +57,9 @@ img, svg { max-width: 100%; }
 .topbar { position: sticky; top: 0; z-index: 50; background: var(--navy); }
 /* Equal spacing: the gap above, below and left of the letters = --bar-pad;
    the menu button sits --bar-pad from the right, centred vertically. */
-.topbar { --bar-pad: 24px; --cap: 21px; }
-.topbar-inner { height: calc(var(--cap) + 2 * var(--bar-pad)); padding: 0 var(--bar-pad); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.wordmark { display: block; font-family: 'Exo 2', var(--cond); font-style: italic; font-size: 30px; font-weight: 800; letter-spacing: .03em; color: var(--paper); text-decoration: none; line-height: 1; position: relative; top: var(--nudge, -2px); }
+.topbar { --bar-pad: 28px; --cap: 20px; }
+.topbar-inner { height: calc(var(--cap) + 2 * var(--bar-pad)); padding: 0 var(--bar-pad) 0 calc(var(--bar-pad) - 1px); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.wordmark { display: block; font-family: 'Exo 2', var(--cond); font-style: italic; font-size: 28.5px; font-weight: 800; letter-spacing: .03em; color: var(--paper); text-decoration: none; line-height: 1; position: relative; top: var(--nudge, -1px); }
 .wordmark:hover { color: #FFFFFF; }
 
 .menu { position: relative; }
