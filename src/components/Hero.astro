@@ -1,6 +1,3 @@
----
-import { apps } from '../data/site';
----
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero-art">
     <svg viewBox="0 0 1200 650" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">
@@ -85,16 +82,6 @@ import { apps } from '../data/site';
 
   <div class="hero-body">
     <h1 id="hero-title" class="hero-title">MeshCore Cape Town</h1>
-    <div class="hero-apps">
-      <a class="store" href={apps.android} rel="noopener">
-        <svg width="20" height="22" viewBox="0 0 20 22" aria-hidden="true"><path d="M2 1.5v19l16-9.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /></svg>
-        <span><small>Get it on</small>Google Play</span>
-      </a>
-      <a class="store" href={apps.ios} rel="noopener">
-        <svg width="18" height="24" viewBox="0 0 18 24" aria-hidden="true"><rect x="2" y="1" width="14" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2" /><path d="M7 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
-        <span><small>Download on the</small>App Store</span>
-      </a>
-    </div>
     <p class="hero-lead">MeshCore is a simple, secure, off-grid mesh communications system.</p>
     <ul class="hero-list">
       <li>Works without internet or cellular networks — even during load-shedding.</li>
@@ -113,18 +100,10 @@ import { apps } from '../data/site';
   .hero { margin-bottom: -32px; }
   .hero-art { position: absolute; inset: 0; }
   .hero-art svg { width: 100%; height: 100%; display: block; }
-  /* title spacing: the visible gaps above, left of and below the title are equal (about 36px desktop, 22px phone) */
+  /* title spacing: equal visible gaps above and left of the title (about 36px desktop, 22px phone);
+     the text below starts where the middle of the old app-store buttons was */
   .hero-body { position: relative; flex: 1 1 auto; padding: 29px 32px 40px; display: flex; flex-direction: column; gap: 16px; max-width: 620px; }
-  .hero-title { font-family: var(--cond); font-weight: 700; font-size: 56px; line-height: 1; letter-spacing: -.01em; margin: 0 0 13.5px; white-space: nowrap; text-shadow: 0 2px 18px rgba(11, 22, 38, .6); }
-  /* store buttons share one width (the wider one sets it); side by side on desktop, stacked on phones */
-  .hero-apps { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; width: max-content; gap: 14px; padding: 6px 0 14px; }
-  .store {
-    display: inline-flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 16px; border-radius: 10px;
-    color: #F3F5EF; text-decoration: none; background: rgba(11, 22, 38, .72);
-    border: 1.5px solid #F3F5EF; font-family: var(--cond); font-size: 19px; font-weight: 600; line-height: 1.05;
-  }
-  .store small { display: block; font-family: var(--mono); font-size: 11px; font-weight: 400; letter-spacing: .06em; }
-  .store:hover { background: #F3F5EF; color: #0B1626; }
+  .hero-title { font-family: var(--cond); font-weight: 700; font-size: 56px; line-height: 1; letter-spacing: -.01em; margin: 0 0 43.5px; white-space: nowrap; text-shadow: 0 2px 18px rgba(11, 22, 38, .6); }
   .hero-lead { margin: 0; font-size: 16px; font-weight: 500; text-shadow: 0 1px 10px rgba(11, 22, 38, .8); }
   .hero-list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 4px; font-size: 16px; text-shadow: 0 1px 10px rgba(11, 22, 38, .8); }
   .hero-list li::marker { color: #8FE3F2; }
@@ -133,8 +112,7 @@ import { apps } from '../data/site';
   @media (max-width: 760px) {
     .hero { min-height: 0; border-radius: 18px; }
     .hero-body { order: 1; padding: 18px 20px 24px; }
-    .hero-title { font-size: 32px; margin-bottom: 0; }
-    .hero-apps { grid-auto-flow: row; }
+    .hero-title { font-size: 32px; margin-bottom: 61px; }
     .keep { white-space: normal; }
     .hero-art { position: relative; inset: auto; order: 2; aspect-ratio: 1200 / 650; overflow: hidden; }
     .hero-art svg { transform: scale(1.75); transform-origin: 100% 88%; }

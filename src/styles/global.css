@@ -26,6 +26,8 @@ body {
   font-size: 17px;
   line-height: 1.55;
   background-color: var(--paper);
+  /* full-height column so the footer sits at the bottom of short pages */
+  min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column;
 }
 a { color: var(--accent); }
 a:hover { color: var(--accent-dark); }
@@ -40,7 +42,9 @@ img, svg { max-width: 100%; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* Page sheet */
-.sheet { padding: 40px 48px 72px; }
+.sheet { padding: 40px 48px 24px; flex: 1 0 auto; display: flex; flex-direction: column; }
+.sheet > .stack { flex: 1 0 auto; width: 100%; }
+.sheet > .stack > main { flex: 1 0 auto; }
 .stack { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 72px; }
 
 /* Boxes */
@@ -160,13 +164,13 @@ a.ref:hover .kicker { color: #F0A37E; }
 .path .arrow { font-family: var(--mono); color: var(--accent); font-size: 20px; }
 
 /* Footer: one centred line */
-.site-foot { text-align: center; font-family: var(--mono); font-size: 13px; color: var(--ink-muted); }
+.site-foot { text-align: center; font-family: var(--mono); font-size: 13px; color: var(--ink-muted); margin-top: -32px; } /* 40px / 24px below the last section */
 
 @media (max-width: 760px) {
   .topbar { --bar-pad: 16px; --cap: 17px; --nudge: -1px; }
   .wordmark { font-size: 24px; }
   .menu-btn { width: 40px; height: 40px; }
-  .sheet { padding: 24px 16px 48px; }
+  .sheet { padding: 24px 16px 16px; }
   .stack { gap: 56px; }
   .h1 { font-size: 40px; }
   .h2 { font-size: 30px; }
