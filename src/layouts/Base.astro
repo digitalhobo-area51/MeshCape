@@ -48,9 +48,8 @@ const ogImage = new URL('/og.png', site.url);
         <nav id="site-menu" class="menu-panel" aria-label="Main">
           <ul>
             {nav.map((item) => (
-              <li><a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a></li>
+              <li><a href={item.href} aria-current={path === item.href ? 'page' : undefined} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener' : undefined}>{item.label}</a></li>
             ))}
-            <li><a href={site.wikiUrl}>Wiki ↗</a></li>
           </ul>
         </nav>
       </div>

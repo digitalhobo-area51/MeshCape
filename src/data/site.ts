@@ -27,14 +27,12 @@ export const radio = {
   band: '869.4–869.65 MHz',
 };
 
-// Order here also sets each page's "Sheet 0x / 0n" number in the header.
-export const nav = [
+/** Menu items. External links open in a new tab. */
+export const nav: { href: string; label: string; external?: boolean }[] = [
   { href: '/', label: 'Home' },
-  { href: '/get-started/', label: 'Get started' },
-  { href: '/settings/', label: 'Settings' },
-  { href: '/home-assistant/', label: 'Home Assistant' },
-  { href: '/community/', label: 'Community' },
-  { href: '/links/', label: 'Links' },
+  { href: 'https://meshcore.io/', label: 'Official MeshCore Site', external: true },
+  { href: 'https://wiki.meshcape.io', label: 'Local Community Site', external: true },
+  { href: 'https://map.meshcore.io/?lat=-33.5379&lon=19.2532&zoom=8', label: 'Dynamic Mesh Map', external: true },
 ];
 
 /** Link to a page on the wiki, e.g. wiki('/hardware/builds'). */

@@ -84,11 +84,11 @@ img, svg { max-width: 100%; }
 /* rounded panel to match the hero and table cards; links highlight as rounded pills inside it */
 .menu-panel ul { list-style: none; margin: 0; padding: 6px; background: var(--paper-raised); border: 2px solid var(--ink); border-radius: 18px; box-shadow: 0 12px 32px rgba(17, 24, 39, .18); overflow: hidden; }
 .menu-panel a {
-  display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 10px;
+  display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 10px; white-space: nowrap;
   font-family: var(--mono); font-size: 15px; color: var(--ink); text-decoration: none;
 }
 .menu-panel a:hover { background: var(--ink); color: var(--paper); }
-.menu-panel a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+.menu-panel a[aria-current="page"] { color: var(--ink); font-weight: 600; }
 .menu-panel a[aria-current="page"]:hover { color: var(--paper); }
 @media (prefers-reduced-motion: reduce) { .menu-panel { transition: none; } }
 
