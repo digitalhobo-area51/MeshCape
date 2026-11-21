@@ -1,0 +1,76 @@
+---
+// "How to get started": three numbered steps joined by a line, each with a button to meshcore.io.
+const steps = [
+  {
+    title: 'Get the App',
+    body: 'Install the MeshCore app on your phone or computer, and keep an offline copy ready for when the internet is down.',
+    cta: 'Go to downloads',
+    href: 'https://meshcore.io/#download',
+  },
+  {
+    title: 'Buy a Node',
+    body: 'Choose a supported LoRa device. Everyone needs their own companion node to connect to the mesh.',
+    cta: 'View hardware',
+    href: 'https://meshcore.io/#hardware',
+  },
+  {
+    title: 'Flash & Connect',
+    body: 'Install the MeshCore firmware with the web flasher, then pair your phone with the node and start messaging.',
+    cta: 'Launch flasher',
+    href: 'https://flasher.meshcore.io/',
+  },
+];
+---
+<section class="start" aria-labelledby="start-title">
+  <header class="start-head">
+    <h2 id="start-title" class="start-title">How to get started</h2>
+    <p class="start-sub">Get the app, get a node, start messaging.</p>
+  </header>
+  <ol class="steps">
+    {steps.map((s, i) => (
+      <li class="step">
+        <span class="num" aria-hidden="true">{i + 1}</span>
+        <h3 class="step-title">{s.title}</h3>
+        <p class="step-body">{s.body}</p>
+        <a class="step-btn" href={s.href} target="_blank" rel="noopener">{s.cta}</a>
+      </li>
+    ))}
+  </ol>
+</section>
+<style>
+  /* Same gap above as between the other sections (40px desktop, 24px phone): the page stack gives 72 / 56, pull up 32. */
+  .start { margin-top: -32px; text-align: center; }
+  .start-head { margin-bottom: 44px; }
+  .start-title { font-family: var(--cond); font-size: 40px; font-weight: 700; text-transform: uppercase; letter-spacing: .01em; line-height: 1.1; margin: 0; color: var(--ink); }
+  .start-sub { margin: 10px 0 0; font-size: 16px; color: var(--ink-muted); }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; position: relative; }
+  /* connecting line through the centres of the numbered circles */
+  .steps::before { content: ''; position: absolute; top: 27px; left: calc(100% / 6); right: calc(100% / 6); height: 2px; background: var(--rule); }
+  .step { display: flex; flex-direction: column; align-items: center; position: relative; }
+  .num {
+    width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; position: relative;
+    background: var(--paper); border: 2px solid var(--ink); color: var(--ink);
+    font-family: var(--sans); font-size: 20px; font-weight: 600; margin-bottom: 26px;
+  }
+  .step-title { font-family: var(--sans); font-size: 24px; font-weight: 600; line-height: 1.25; margin: 0 0 12px; color: var(--ink); }
+  .step-body { margin: 0 0 22px; max-width: 360px; font-size: 16px; line-height: 1.55; color: var(--ink-muted); flex: 1 0 auto; }
+  .step-btn {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 28px; border-radius: 10px;
+    background: var(--ink); color: var(--paper); text-decoration: none;
+    font-family: var(--sans); font-size: 14px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+    transition: background .15s ease, transform .15s ease;
+  }
+  .step-btn:hover, .step-btn:focus-visible { background: #24363F; color: var(--paper); transform: translateY(-2px); }
+  @media (prefers-reduced-motion: reduce) { .step-btn { transition: none; } .step-btn:hover { transform: none; } }
+
+  @media (max-width: 760px) {
+    .start-head { margin-bottom: 28px; }
+    .start-title { font-size: 30px; }
+    .steps { grid-template-columns: 1fr; gap: 36px; }
+    .steps::before { display: none; }
+    .num { width: 48px; height: 48px; font-size: 18px; margin-bottom: 16px; }
+    .step-title { font-size: 22px; }
+    .step-body { margin-bottom: 18px; }
+  }
+</style>
