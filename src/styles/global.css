@@ -41,7 +41,7 @@ img, svg { max-width: 100%; }
 
 /* Page sheet */
 .sheet { padding: 40px 48px 72px; }
-.stack { max-width: 992px; margin: 0 auto; display: flex; flex-direction: column; gap: 72px; }
+.stack { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 72px; }
 
 /* Boxes */
 .box { border: 1.5px solid var(--ink); background: var(--paper-raised); }
