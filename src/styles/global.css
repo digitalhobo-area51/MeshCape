@@ -11,6 +11,7 @@
   --accent: #A63B0D;
   --accent-dark: #7A2B08;
   --accent-wash: #FBF1EA;
+  --navy: #111827;
   --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --sans: 'IBM Plex Sans', system-ui, sans-serif;
   --cond: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif;
@@ -53,17 +54,18 @@ img, svg { max-width: 100%; }
 .box-head.ink { background: var(--ink); color: var(--paper); border-bottom: none; font-size: 13px; padding: 12px 20px; }
 
 /* Top bar: wordmark + menu */
-.topbar { position: sticky; top: 0; z-index: 50; background: var(--paper-raised); border-bottom: 1.5px solid var(--ink); }
+.topbar { position: sticky; top: 0; z-index: 50; background: var(--navy); }
 .topbar-inner { max-width: 1296px; margin: 0 auto; padding: 10px 48px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.wordmark { font-family: var(--cond); font-size: 30px; font-weight: 700; letter-spacing: .04em; color: var(--ink); text-decoration: none; line-height: 1.2; }
-.wordmark:hover { color: var(--accent); }
+.wordmark { font-family: 'Exo 2', var(--cond); font-style: italic; font-size: 30px; font-weight: 800; letter-spacing: .03em; color: var(--paper); text-decoration: none; line-height: 1.2; }
+.wordmark:hover { color: #FFFFFF; }
 
 .menu { position: relative; }
 .menu-btn {
   width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; cursor: pointer;
-  background: var(--paper-raised); color: var(--ink); border: 2px solid var(--ink);
+  background: var(--paper); color: var(--navy); border: none;
 }
-.menu-btn:hover, .menu.open .menu-btn { background: var(--ink); color: var(--paper); }
+.menu-btn:hover, .menu.open .menu-btn { background: #FFFFFF; }
+.menu-btn:focus-visible { outline-color: var(--paper); }
 .menu-panel {
   position: absolute; right: 0; top: 100%; padding-top: 10px; min-width: 240px;
   visibility: hidden; opacity: 0; transform: translateY(-4px);
