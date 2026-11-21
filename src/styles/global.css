@@ -41,7 +41,7 @@ img, svg { max-width: 100%; }
 
 /* Page sheet */
 .sheet { padding: 40px 48px 72px; }
-.stack { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 72px; }
+.stack { max-width: 992px; margin: 0 auto; display: flex; flex-direction: column; gap: 72px; }
 
 /* Boxes */
 .box { border: 1.5px solid var(--ink); background: var(--paper-raised); }
@@ -118,11 +118,11 @@ h1, h2, h3 { font-family: var(--cond); font-weight: 700; margin: 0; }
 .prose ol, .prose ul { color: var(--ink-2); padding-left: 22px; display: flex; flex-direction: column; gap: 8px; max-width: 70ch; }
 
 /* Spec table (Table 1) */
-.spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-.spec > div { padding: 20px 22px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.spec > div { padding: 20px 18px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
 .spec > div:last-child { border-right: none; }
-.spec-value { font-family: var(--mono); font-size: 30px; font-weight: 600; }
-.spec-unit { font-size: 16px; font-weight: 400; }
+.spec-value { font-family: var(--mono); font-size: 26px; font-weight: 600; white-space: nowrap; }
+.spec-unit { font-size: 15px; font-weight: 400; }
 
 /* Callouts */
 .caution { display: flex; gap: 16px; align-items: flex-start; padding: 16px 20px; border: 1.5px dashed var(--accent); background: var(--accent-wash); }

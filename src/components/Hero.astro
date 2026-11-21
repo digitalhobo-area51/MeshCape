@@ -1,7 +1,7 @@
 ---
-import { apps, radio, site } from '../data/site';
+import { apps } from '../data/site';
 ---
-<section class="hero box-heavy" aria-labelledby="hero-title">
+<section class="hero" aria-labelledby="hero-title">
   <div class="hero-art">
     <svg viewBox="0 0 1200 650" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">
       <defs>
@@ -100,7 +100,6 @@ import { apps, radio, site } from '../data/site';
   </div>
 
   <div class="hero-body">
-    <div class="hero-kicker">{site.name} · South Africa</div>
     <h1 id="hero-title" class="hero-title">MeshCore Cape Town</h1>
     <div class="hero-apps">
       <a class="store" href={apps.android} rel="noopener">
@@ -114,50 +113,39 @@ import { apps, radio, site } from '../data/site';
     </div>
     <p class="hero-lead">MeshCore is a simple, secure, off-grid text-messaging mesh:</p>
     <ul class="hero-list">
-      <li>Completely independent of the internet and cell networks — it keeps working through load-shedding and outages.</li>
-      <li>Licence-free in South Africa, using ICASA's 868 MHz ISM sub-band ({radio.band}).</li>
+      <li>Works without internet or cell networks — even during load-shedding.</li>
+      <li>Licence-free in South Africa on ICASA's 868 MHz ISM band.</li>
       <li>Community driven and not centrally organised — anyone can join.</li>
-      <li>A fast-growing alternative to Meshtastic, with a very active community.</li>
+      <li>A fast-growing alternative to Meshtastic, with an active community.</li>
     </ul>
   </div>
 
-  <div class="hero-strip">
-    <span>Fig. 0 — Table Mountain from Table Bay, with repeaters on the peaks</span>
-    <span>NTS</span>
-  </div>
 </section>
 
 <style>
-  .hero { position: relative; overflow: hidden; color: #F3F5EF; background: #0B1626; display: flex; flex-direction: column; min-height: 640px; }
+  /* Sized like the meshcore.ch hero card: 992 x 470, 24px rounded corners */
+  .hero { position: relative; overflow: hidden; color: #F3F5EF; background: #0B1626; display: flex; flex-direction: column; min-height: 470px; border-radius: 24px; box-shadow: 0 12px 32px rgba(17, 24, 39, .18); }
   .hero-art { position: absolute; inset: 0; }
   .hero-art svg { width: 100%; height: 100%; display: block; }
-  .hero-body { position: relative; flex: 1 1 auto; padding: 56px 48px 40px; display: flex; flex-direction: column; gap: 18px; max-width: 600px; }
-  .hero-kicker { font-family: var(--mono); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #F2B27A; }
-  .hero-title { font-family: var(--cond); font-weight: 700; font-size: 64px; line-height: 1; letter-spacing: -.01em; margin: 0; text-shadow: 0 2px 18px rgba(11, 22, 38, .6); }
-  .hero-apps { display: flex; flex-wrap: wrap; gap: 14px; padding: 6px 0 10px; }
+  .hero-body { position: relative; flex: 1 1 auto; padding: 52px 48px 40px; display: flex; flex-direction: column; gap: 16px; max-width: 620px; }
+  .hero-title { font-family: var(--cond); font-weight: 700; font-size: 56px; line-height: 1; letter-spacing: -.01em; margin: 0; white-space: nowrap; text-shadow: 0 2px 18px rgba(11, 22, 38, .6); }
+  .hero-apps { display: flex; flex-wrap: wrap; gap: 14px; padding: 6px 0 14px; }
   .store {
-    display: inline-flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 18px;
+    display: inline-flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 16px; border-radius: 10px;
     color: #F3F5EF; text-decoration: none; background: rgba(11, 22, 38, .72);
-    border: 1.5px solid #F3F5EF; font-family: var(--cond); font-size: 20px; font-weight: 600; line-height: 1.05;
+    border: 1.5px solid #F3F5EF; font-family: var(--cond); font-size: 19px; font-weight: 600; line-height: 1.05;
   }
   .store small { display: block; font-family: var(--mono); font-size: 11px; font-weight: 400; letter-spacing: .06em; }
   .store:hover { background: #F3F5EF; color: #0B1626; }
-  .hero-lead { margin: 0; font-size: 18px; font-weight: 500; text-shadow: 0 1px 10px rgba(11, 22, 38, .8); }
-  .hero-list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; font-size: 17px; text-shadow: 0 1px 10px rgba(11, 22, 38, .8); }
+  .hero-lead { margin: 0; font-size: 16px; font-weight: 500; text-shadow: 0 1px 10px rgba(11, 22, 38, .8); }
+  .hero-list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 4px; font-size: 16px; text-shadow: 0 1px 10px rgba(11, 22, 38, .8); }
   .hero-list li::marker { color: #8FE3F2; }
-  .hero-strip {
-    position: relative; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-    padding: 10px 20px; border-top: 1.5px solid rgba(243, 245, 239, .6); background: rgba(11, 22, 38, .78);
-    font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #C9D3CE;
-  }
   @media (max-width: 760px) {
-    .hero { min-height: 0; }
-    .hero-body { order: 1; padding: 32px 20px 24px; }
-    .hero-title { font-size: 44px; }
-    .hero-art { position: relative; inset: auto; order: 2; aspect-ratio: 1200 / 650; border-top: 1px solid rgba(243, 245, 239, .25); }
-    .hero-art { overflow: hidden; }
+    .hero { min-height: 0; border-radius: 18px; }
+    .hero-body { order: 1; padding: 28px 20px 24px; }
+    .hero-title { font-size: 32px; }
+    .hero-art { position: relative; inset: auto; order: 2; aspect-ratio: 1200 / 650; overflow: hidden; }
     .hero-art svg { transform: scale(1.75); transform-origin: 100% 88%; }
     .hero-art .labels { display: none; }
-    .hero-strip { order: 3; }
   }
 </style>
