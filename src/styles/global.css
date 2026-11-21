@@ -159,11 +159,8 @@ a.ref:hover .kicker { color: #F0A37E; }
 .path .node.out { border-style: dashed; background: transparent; }
 .path .arrow { font-family: var(--mono); color: var(--accent); font-size: 20px; }
 
-/* Footer title block */
-.footblock { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-.footblock > div { padding: 14px 18px; border-right: 1px solid var(--ink); }
-.footblock > div:last-child { border-right: none; }
-.footblock .cell-value { font-size: 14px; font-weight: 400; }
+/* Footer: one centred line */
+.site-foot { text-align: center; font-family: var(--mono); font-size: 13px; color: var(--ink-muted); }
 
 @media (max-width: 760px) {
   .topbar { --bar-pad: 16px; --cap: 17px; --nudge: -1px; }
@@ -173,5 +170,4 @@ a.ref:hover .kicker { color: #F0A37E; }
   .stack { gap: 56px; }
   .h1 { font-size: 40px; }
   .h2 { font-size: 30px; }
-  .footblock > div { border-right: none; border-bottom: 1px solid var(--ink); }
 }

@@ -62,12 +62,7 @@ const ogImage = new URL('/og.png', site.url);
           <slot />
         </main>
 
-        <footer class="box-heavy footblock">
-          <div><div class="label">Drawn by</div><div class="cell-value">MeshCape community</div></div>
-          <div><div class="label">Contact</div><div class="cell-value">{site.contact}</div></div>
-          <div><div class="label">Content licence</div><div class="cell-value">{site.contentLicence}</div></div>
-          <div><div class="label">Doc</div><div class="cell-value">meshcape.io · © {new Date().getFullYear()}</div></div>
-        </footer>
+        <footer class="site-foot">meshcape.io · © {new Date().getFullYear()}</footer>
       </div>
   </div>
   <script>

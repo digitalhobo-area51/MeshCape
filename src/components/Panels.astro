@@ -1,0 +1,28 @@
+---
+// Three equal content panels under the radio table. Placeholder text for now.
+const panels = [
+  { title: 'Example heading', body: 'This is example text to show how content will look in this panel. It will be replaced with the real content later.' },
+  { title: 'Example heading', body: 'This is example text to show how content will look in this panel. It will be replaced with the real content later.' },
+  { title: 'Example heading', body: 'This is example text to show how content will look in this panel. It will be replaced with the real content later.' },
+];
+---
+<section class="panels" aria-label="Highlights">
+  {panels.map((p) => (
+    <article class="panel">
+      <h2 class="panel-title">{p.title}</h2>
+      <p class="panel-body">{p.body}</p>
+    </article>
+  ))}
+</section>
+<style>
+  /* Same gap above as between the hero and the table (40px desktop, 24px phone), and the same gap between panels.
+     The page stack puts 72px / 56px between sections, so pull up by 32px. */
+  .panels { margin-top: -32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .panel { background: var(--ink); color: var(--paper); border-radius: 24px; padding: 32px; min-height: 260px; display: flex; flex-direction: column; gap: 12px; }
+  .panel-title { font-family: var(--cond); font-size: 26px; font-weight: 700; line-height: 1.15; margin: 0; }
+  .panel-body { margin: 0; font-size: 16px; line-height: 1.55; }
+  @media (max-width: 760px) {
+    .panels { grid-template-columns: 1fr; gap: 24px; }
+    .panel { border-radius: 18px; padding: 22px 20px; min-height: 0; }
+  }
+</style>
