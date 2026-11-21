@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import { channels, wiki } from '../data/site';
+---
+<Base title="Community" description="Who MeshCape is, how to get involved in Cape Town's MeshCore mesh, and the house rules.">
+  <section style="display: flex; flex-direction: column; gap: 28px">
+    <SectionHead num="5" title="Community" level={1} />
+    <p class="muted" style="margin: 0; max-width: 70ch; font-size: 19px">MeshCape is a volunteer group of radio tinkerers, makers and home-automation fans building an off-grid MeshCore network across Cape Town. Nobody owns the mesh — every node is run by someone in the community.</p>
+  </section>
+
+  <section style="display: flex; flex-direction: column; gap: 24px">
+    <h2 class="h3">Ways to get involved</h2>
+    <div class="grid-cards">
+      <div class="box" style="display: flex; flex-direction: column">
+        <div class="box-head"><span>Role A</span><span style="color: var(--ink-muted)">Everyone</span></div>
+        <div class="card-body">
+          <h3 class="h3">Run a companion</h3>
+          <p>Every active node helps prove coverage. Get on the mesh and say hello on the public channel.</p>
+          <a class="mono" href="/get-started/" style="font-size: 14px; margin-top: 4px">Get started →</a>
+        </div>
+      </div>
+      <div class="box" style="display: flex; flex-direction: column">
+        <div class="box-head"><span>Role B</span><span style="color: var(--ink-muted)">Most wanted</span></div>
+        <div class="card-body">
+          <h3 class="h3">Host a repeater</h3>
+          <p>Access to a rooftop, a hill or a tall building? Repeaters are what let messages cross the mountain.</p>
+          <a class="mono" href={wiki('/repeaters/deployment-checklist')} style="font-size: 14px; margin-top: 4px">Deployment checklist ↗</a>
+        </div>
+      </div>
+      <div class="box" style="display: flex; flex-direction: column">
+        <div class="box-head"><span>Role C</span><span style="color: var(--ink-muted)">Writers</span></div>
+        <div class="card-body">
+          <h3 class="h3">Write it down</h3>
+          <p>Document a build, a test or a fix on the wiki. Sign up on the wiki itself — no other accounts needed.</p>
+          <a class="mono" href={wiki('/contributing')} style="font-size: 14px; margin-top: 4px">How to contribute ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="split">
+    <div style="flex: 6 1 420px; display: flex; flex-direction: column; gap: 16px">
+      <h2 class="h3">Find us</h2>
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        {channels.map((c) => c.href ? (
+          <a class="ref" href={c.href} rel="noopener"><span class="ref-title">{c.label}</span><span class="ref-note">{c.note}</span></a>
+        ) : (
+          <div class="ref pending"><span class="ref-title">{c.label}</span><span class="ref-note">{c.note}</span></div>
+        ))}
+      </div>
+    </div>
+    <aside class="memo" style="flex: 4 1 320px">
+      <div class="kicker" style="font-size: 12px">House rules</div>
+      <p><strong>Be accurate.</strong> Share what you tested, not what you assume.</p>
+      <p><strong>Be kind.</strong> Everyone started somewhere.</p>
+      <p><strong>Protect privacy.</strong> No exact home locations, IP addresses, passwords or other people's details — on the mesh, the wiki or here.</p>
+      <p><strong>Stay legal.</strong> Use the community radio settings and respect ICASA power limits.</p>
+    </aside>
+  </section>
+</Base>

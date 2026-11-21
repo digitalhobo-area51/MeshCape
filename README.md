@@ -12,7 +12,9 @@ Most values that change — the radio preset (Table 1), links, contact details, 
 src/data/site.ts
 ```
 
-Set `radio.confirmed` to `true` once the community preset is agreed; that removes the "still to be agreed" note and enables the **Copy settings** button.
+The radio preset is the South African EU/UK (Narrow) preset — 869.618 MHz, BW 62.5 kHz, SF8, CR8, 10% duty cycle — inside ICASA's licence-free 869.4–869.65 MHz sub-band. Setting `radio.confirmed` to `false` shows a "still to be agreed" note instead and disables **Copy settings**.
+
+`nav` order also sets each page's "Sheet 0x / 0n" number in the header.
 
 ## Project layout
 
@@ -21,10 +23,14 @@ src/
   data/site.ts        values used across the site
   layouts/Base.astro  page frame: title-block header, nav, footer
   components/         figures, tables, cards
-  pages/              one file per page (index, get-started, settings, home-assistant, links, 404)
+  pages/              one file per page (index, get-started, settings, home-assistant, community, links, 404)
   styles/global.css   notebook theme (grid paper, margin rule, drafting borders)
-public/               favicon and static files
+public/               favicon, social preview image (og.png), robots.txt
+wiki/                 wiki.meshcape.io: Docker Compose, setup guide, backups
+  seed/               starter wiki pages (Wiki.js Git-storage format)
 ```
+
+The wiki runs separately (Wiki.js on a home VM behind a Cloudflare Tunnel) — see [wiki/SETUP.md](wiki/SETUP.md).
 
 ## Running locally
 

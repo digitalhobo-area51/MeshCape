@@ -3,9 +3,9 @@ import Base from '../layouts/Base.astro';
 import SectionHead from '../components/SectionHead.astro';
 import SignalPath from '../components/SignalPath.astro';
 import Caution from '../components/Caution.astro';
-import { site } from '../data/site';
+import { wiki } from '../data/site';
 ---
-<Base title="Home Assistant" sheet="04 / 05" description="Connecting a MeshCore node to Home Assistant.">
+<Base title="Home Assistant" description="Connecting a MeshCore node to Home Assistant.">
   <section style="display: flex; flex-direction: column; gap: 28px">
     <SectionHead num="4" title="Mesh meets Home Assistant" level={1} />
     <div class="split" style="align-items: center">
@@ -24,6 +24,6 @@ import { site } from '../data/site';
   <section class="memo" style="transform: none">
     <div class="kicker" style="font-size: 12px">Build notes</div>
     <p>The step-by-step integration guide — firmware, network setup and Home Assistant configuration — lives in the wiki so the community can keep it current.</p>
-    <a class="btn ink" href={site.wikiUrl} style="align-self: flex-start; font-size: 14px">Read the guide ↗</a>
+    <a class="btn ink" href={wiki('/home-assistant')} style="align-self: flex-start; font-size: 14px">Read the guide ↗</a>
   </section>
 </Base>

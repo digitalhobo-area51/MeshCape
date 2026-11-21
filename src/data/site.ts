@@ -12,22 +12,39 @@ export const site = {
   contentLicence: 'CC BY 4.0',
 };
 
-// Table 1 — community radio preset. TBC until agreed and checked against
-// ICASA's licence-exempt 868 MHz rules.
+// Table 1 — community radio preset for South Africa.
+// 869.618 MHz ± 31.25 kHz = 869.587–869.649 MHz, inside ICASA's licence-free
+// 868 MHz ISM sub-band 869.4–869.65 MHz.
 export const radio = {
-  confirmed: false,
-  frequencyMHz: 'TBC',
-  bandwidthKHz: 'TBC',
-  spreadingFactor: 'TBC',
-  codingRate: 'TBC',
+  confirmed: true,
+  appPreset: 'EU/UK (Narrow)',
+  frequencyMHz: '869.618',
+  bandwidthKHz: '62.5',
+  spreadingFactor: '8',
+  codingRate: '8',
+  codingRateRatio: '4/8',
+  dutyCycle: '10%',
+  band: '869.4–869.65 MHz',
 };
 
+// Order here also sets each page's "Sheet 0x / 0n" number in the header.
 export const nav = [
   { href: '/', label: 'Home' },
   { href: '/get-started/', label: 'Get started' },
   { href: '/settings/', label: 'Settings' },
   { href: '/home-assistant/', label: 'Home Assistant' },
+  { href: '/community/', label: 'Community' },
   { href: '/links/', label: 'Links' },
+];
+
+/** Link to a page on the wiki, e.g. wiki('/hardware/builds'). */
+export const wiki = (path = '') => `${site.wikiUrl}${path}`;
+
+// Community channels. href: null hides the button until the link exists.
+export const channels = [
+  { label: 'Wiki', note: 'Guides anyone can edit', href: wiki() },
+  { label: 'Chat group', note: 'Day-to-day chat — link to come', href: null },
+  { label: 'GitHub', note: 'Source for this site', href: 'https://github.com/digitalhobo-area51/meshcape' },
 ];
 
 export const apps = {
@@ -45,13 +62,14 @@ export const references = [
   { id: 'F', title: 'SA Mesh wiki (AU)', note: "South Australia's build notes", href: 'https://wiki.samesh.au' },
 ];
 
+// Paths match the starter pages in wiki/seed/.
 export const wikiSections = [
-  'Start here',
-  'Cape Town region & coverage',
-  'Recommended settings',
-  'Companion nodes',
-  'Repeaters & deployment checklist',
-  'Hardware builds',
-  'Home Assistant integration',
-  'Troubleshooting',
+  { title: 'Start here', path: '/' },
+  { title: 'Cape Town region & coverage', path: '/cape-town/region' },
+  { title: 'Recommended settings', path: '/settings/recommended' },
+  { title: 'Companion nodes', path: '/companion' },
+  { title: 'Repeaters & deployment checklist', path: '/repeaters' },
+  { title: 'Hardware builds', path: '/hardware/builds' },
+  { title: 'Home Assistant integration', path: '/home-assistant' },
+  { title: 'Troubleshooting', path: '/troubleshooting' },
 ];

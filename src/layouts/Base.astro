@@ -6,12 +6,16 @@ import { site, nav } from '../data/site';
 interface Props {
   title?: string;
   description?: string;
-  sheet: string; // e.g. "01 / 05"
+  sheet?: string; // overrides the automatic "01 / 06" number
 }
 
-const { title, description = 'MeshCape is the MeshCore community for Cape Town: radio settings, guides and the people building an off-grid LoRa mesh.', sheet } = Astro.props;
+const { title, description = 'MeshCape is the MeshCore community for Cape Town: radio settings, guides and the people building an off-grid LoRa mesh.' } = Astro.props;
 const pageTitle = title ? `${title} · ${site.name}` : `${site.name} — ${site.tagline}`;
 const path = Astro.url.pathname;
+const pad = (n: number) => String(n).padStart(2, '0');
+const navIndex = nav.findIndex((item) => item.href === path);
+const sheet = Astro.props.sheet ?? (navIndex >= 0 ? `${pad(navIndex + 1)} / ${pad(nav.length)}` : `— / ${pad(nav.length)}`);
+const ogImage = new URL('/og.png', site.url);
 ---
 <!doctype html>
 <html lang="en-ZA">
@@ -25,6 +29,14 @@ const path = Astro.url.pathname;
   <meta property="og:title" content={pageTitle} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content={new URL(path, site.url)} />
+  <meta property="og:site_name" content={site.name} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="MeshCape — off-grid MeshCore mesh for Cape Town" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
   <meta name="theme-color" content="#16232B" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -56,7 +68,7 @@ const path = Astro.url.pathname;
           </nav>
         </header>
 
-        <main id="main" class="stack" style="gap: inherit">
+        <main id="main" class="stack" style="gap: inherit; margin: 0; width: 100%; max-width: none">
           <slot />
         </main>
 

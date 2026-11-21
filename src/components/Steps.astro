@@ -1,5 +1,5 @@
 ---
-import { apps, site } from '../data/site';
+import { apps, wiki } from '../data/site';
 ---
 <div class="grid-cards">
   <div class="box" style="display: flex; flex-direction: column">
@@ -7,7 +7,7 @@ import { apps, site } from '../data/site';
     <div class="card-body">
       <h3 class="h3">Get a radio</h3>
       <p>Most of us started on a Heltec WiFi LoRa 32 V4, the 863–928 MHz version. The wiki keeps a list of boards tested locally.</p>
-      <a class="mono" href={site.wikiUrl} style="font-size: 14px; margin-top: 4px">Hardware list →</a>
+      <a class="mono" href={wiki('/hardware/builds')} style="font-size: 14px; margin-top: 4px">Hardware list →</a>
     </div>
   </div>
   <div class="box" style="display: flex; flex-direction: column">
