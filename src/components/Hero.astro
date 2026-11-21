@@ -21,13 +21,22 @@ import { apps } from '../data/site';
           <stop offset=".4" stop-color="#0B1626" stop-opacity=".6" />
           <stop offset=".58" stop-color="#0B1626" stop-opacity="0" />
         </linearGradient>
-        <filter id="h-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3.5" result="b" />
-          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-        </filter>
         <filter id="h-cloud" x="-10%" y="-60%" width="120%" height="220%">
           <feGaussianBlur stdDeviation="7" />
         </filter>
+        <filter id="h-soft" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="1.2" result="b" />
+          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+        </filter>
+        <radialGradient id="h-node-glow">
+          <stop offset="0" stop-color="#F0FDFF" stop-opacity=".8" />
+          <stop offset=".3" stop-color="#8FE3F2" stop-opacity=".3" />
+          <stop offset="1" stop-color="#8FE3F2" stop-opacity="0" />
+        </radialGradient>
+        <g id="h-crystal">
+          <path d="M0 -10 L8.7 -5 L8.7 5 L0 10 L-8.7 5 L-8.7 -5 Z" />
+          <path d="M0 -10 L-8.7 5 L8.7 5 Z M0 10 L-8.7 -5 L8.7 -5 Z" fill="none" stroke-opacity=".55" />
+        </g>
         <pattern id="h-grid" width="40" height="40" patternUnits="userSpaceOnUse">
           <path d="M40 0H0V40" fill="none" stroke="#9FD6E6" stroke-opacity=".07" stroke-width="1" />
         </pattern>
@@ -63,36 +72,17 @@ import { apps } from '../data/site';
         <path d="M802 371 L799 413" /><path d="M849 372 L843 425" /><path d="M896 373 L893 412" />
       </g>
         <path filter="url(#h-cloud)" fill="#F3F5EF" opacity=".55" d="M645 376 C670 357 732 351 794 354 C857 351 911 356 939 377 C927 389 903 400 897 418 C880 401 857 395 833 401 C802 390 763 395 732 407 C709 393 670 390 645 376 Z" />
-        <g stroke="#8FE3F2" stroke-width="2" fill="none" filter="url(#h-glow)" opacity=".85">
-          <path d="M545 400 L661 374" /><path d="M661 374 L911 370" /><path d="M911 370 L1099 418" /><path d="M1099 418 L1161 488" />
-          <path d="M545 400 L911 370" stroke-opacity=".35" /><path d="M661 374 L1099 418" stroke-opacity=".35" />
-        </g>
       </g>
 
-      <!-- mesh down to the city and a boat in the bay -->
-      <g stroke="#8FE3F2" stroke-width="1.5" fill="none" filter="url(#h-glow)" opacity=".85">
-        <path d="M711 405 L700 518" /><path d="M798 386 L820 516" /><path d="M986 383 L960 518" />
-        <path d="M1127 419 L1090 522" /><path d="M1173 471 L1160 525" />
-        <path d="M960 518 L950 582" stroke-dasharray="4 5" />
+      <!-- mesh: soft glowing links and crystal nodes on the peaks, city and a boat -->
+      <g stroke="#A8F0FF" fill="none" stroke-linecap="round">
+        <g stroke-width="5" stroke-opacity=".08"><path d="M711 405 L798 386" /><path d="M798 386 L986 383" /><path d="M986 383 L1127 419" /><path d="M1127 419 L1173 471" /><path d="M711 405 L700 518" /><path d="M798 386 L820 516" /><path d="M986 383 L960 518" /><path d="M1127 419 L1090 522" /><path d="M1173 471 L1160 525" /><path d="M960 518 L950 582" /></g>
+        <g stroke-width="1" stroke-opacity=".6" filter="url(#h-soft)"><path d="M711 405 L798 386" /><path d="M798 386 L986 383" /><path d="M986 383 L1127 419" /><path d="M1127 419 L1173 471" /><path d="M711 405 L700 518" /><path d="M798 386 L820 516" /><path d="M986 383 L960 518" /><path d="M1127 419 L1090 522" /><path d="M1173 471 L1160 525" /><path d="M960 518 L950 582" /></g>
+        <g stroke-width=".8" stroke-opacity=".22"><path d="M711 405 L986 383" /><path d="M798 386 L1127 419" /><path d="M820 516 L960 518" /><path d="M960 518 L1090 522" /><path d="M798 386 L640 210" /><path d="M986 383 L1230 250" /><path d="M1127 419 L1240 600" /><path d="M950 582 L1240 640" /><path d="M711 405 L600 560" /></g>
       </g>
-      <g filter="url(#h-glow)">
-        <g fill="#0B1626" stroke="#BFF3FB" stroke-width="2">
-          <rect x="705" y="399" width="12" height="12" /><rect x="792" y="380" width="12" height="12" />
-          <rect x="980" y="377" width="12" height="12" /><rect x="1121" y="413" width="12" height="12" />
-          <rect x="1167" y="465" width="12" height="12" />
-        </g>
-        <g fill="#BFF3FB">
-          <circle cx="700" cy="518" r="3.5" /><circle cx="820" cy="516" r="3.5" /><circle cx="960" cy="518" r="3.5" />
-          <circle cx="1090" cy="522" r="3.5" /><circle cx="1160" cy="525" r="3.5" /><circle cx="950" cy="582" r="3.5" />
-        </g>
-      </g>
-      <g class="labels" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="11" fill="#DDE8EC" letter-spacing="1">
-        <text x="724" y="432">DEVIL'S PEAK · 1 000 m</text>
-        <text x="808" y="362">TABLE MOUNTAIN · 1 085 m</text>
-        <text x="1046" y="402">LION'S HEAD · 669 m</text>
-        <text x="1074" y="466">SIGNAL HILL</text>
-        <text x="972" y="602" fill="#F2B27A">TABLE BAY</text>
-      </g>
+      <g fill="url(#h-node-glow)"><circle cx="711" cy="405" r="30" /><circle cx="798" cy="386" r="30" /><circle cx="986" cy="383" r="30" /><circle cx="1127" cy="419" r="30" /><circle cx="1173" cy="471" r="30" /><circle cx="700" cy="518" r="15" /><circle cx="820" cy="516" r="15" /><circle cx="960" cy="518" r="15" /><circle cx="1090" cy="522" r="15" /><circle cx="1160" cy="525" r="15" /><circle cx="950" cy="582" r="15" /></g>
+      <g fill="rgba(190, 245, 255, .1)" stroke="#C8F7FF" stroke-width=".9" stroke-opacity=".85" filter="url(#h-soft)"><use href="#h-crystal" transform="translate(711 405)" /><use href="#h-crystal" transform="translate(798 386)" /><use href="#h-crystal" transform="translate(986 383)" /><use href="#h-crystal" transform="translate(1127 419)" /><use href="#h-crystal" transform="translate(1173 471)" /><use href="#h-crystal" transform="translate(700 518) scale(.55)" /><use href="#h-crystal" transform="translate(820 516) scale(.55)" /><use href="#h-crystal" transform="translate(960 518) scale(.55)" /><use href="#h-crystal" transform="translate(1090 522) scale(.55)" /><use href="#h-crystal" transform="translate(1160 525) scale(.55)" /><use href="#h-crystal" transform="translate(950 582) scale(.55)" /></g>
+      <g fill="#FFFFFF" filter="url(#h-soft)"><circle cx="711" cy="405" r="1.8" /><circle cx="798" cy="386" r="1.8" /><circle cx="986" cy="383" r="1.8" /><circle cx="1127" cy="419" r="1.8" /><circle cx="1173" cy="471" r="1.8" /><circle cx="700" cy="518" r="1.8" /><circle cx="820" cy="516" r="1.8" /><circle cx="960" cy="518" r="1.8" /><circle cx="1090" cy="522" r="1.8" /><circle cx="1160" cy="525" r="1.8" /><circle cx="950" cy="582" r="1.8" /></g>
 
       <rect width="1200" height="650" fill="url(#h-grid)" />
       <rect width="1200" height="650" fill="url(#h-shade)" />
@@ -123,7 +113,7 @@ import { apps } from '../data/site';
 </section>
 
 <style>
-  /* Sized like the meshcore.ch hero card: 992 x 470, 24px rounded corners */
+  /* Hero card: full content width (1200px), 470px tall like meshcore.ch, 24px rounded corners */
   .hero { position: relative; overflow: hidden; color: #F3F5EF; background: #0B1626; display: flex; flex-direction: column; min-height: 470px; border-radius: 24px; box-shadow: 0 12px 32px rgba(17, 24, 39, .18); }
   .hero-art { position: absolute; inset: 0; }
   .hero-art svg { width: 100%; height: 100%; display: block; }
