@@ -202,6 +202,52 @@ on, username `rob@bluebottle.co.za` with an app password, client hostname
 `wiki@meshcape.io`. (Wiki.js 3.4+ also supports Google Workspace OAuth2 for
 mail instead of an app password.)
 
+Set **Default Base URL** too, or registration fails with "no mail server
+configured" (the verification link needs it): `http://192.168.51.57:3080`
+while LAN-only, then `https://wiki.meshcape.io` once the tunnel is live.
+After **Apply**, reload the page (F5) to check every field kept its value.
+
+### South African date and time defaults
+
+Wiki.js 3 has no admin setting for the timezone or date format new accounts
+get (they start on America/New_York, YYYY-MM-DD, 12h). Each user's choices are
+in the `prefs` JSON column of `wiki.users`. Visitors who aren't logged in use
+the `guest@example.com` account's settings.
+
+A database trigger sets new accounts to Africa/Johannesburg, DD/MM/YYYY and
+24h as they're created; members can still change their own afterwards.
+Installed on 2026-11-22:
+
+```sh
+docker exec -i meshcape-wiki-db-1 psql -U wikijs -d wiki <<'SQL'
+BEGIN;
+UPDATE wiki.users
+SET prefs = prefs || '{"timezone":"Africa/Johannesburg","dateFormat":"DD/MM/YYYY","timeFormat":"24h"}'::jsonb
+WHERE email = 'guest@example.com';
+
+CREATE OR REPLACE FUNCTION wiki.meshcape_default_prefs() RETURNS trigger AS $$
+BEGIN
+  NEW.prefs := COALESCE(NEW.prefs, '{}'::jsonb)
+    || '{"timezone":"Africa/Johannesburg","dateFormat":"DD/MM/YYYY","timeFormat":"24h"}'::jsonb;
+  RETURN NEW;
+END $$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS meshcape_default_prefs ON wiki.users;
+CREATE TRIGGER meshcape_default_prefs
+  BEFORE INSERT ON wiki.users
+  FOR EACH ROW EXECUTE FUNCTION wiki.meshcape_default_prefs();
+COMMIT;
+SQL
+docker restart meshcape-wiki-wiki-1
+```
+
+Check it's still in place (should list `meshcape_default_prefs`):
+
+```sh
+docker exec meshcape-wiki-db-1 psql -U wikijs -d wiki -c "SELECT tgname FROM pg_trigger WHERE tgname = 'meshcape_default_prefs';"
+docker exec meshcape-wiki-db-1 psql -U wikijs -d wiki -c "SELECT email, prefs->>'timezone' AS tz, prefs->>'dateFormat' AS date, prefs->>'timeFormat' AS time FROM wiki.users;"
+```
+
 ### Look and feel
 
 *Theme* → dark/light as preferred. *General* → site title `MeshCape Wiki`,
@@ -254,6 +300,10 @@ cd /opt/meshcape-wiki
 ./backup.sh
 docker compose pull && docker compose up -d   # only recreates meshcape-wiki containers
 ```
+
+After every Wiki.js upgrade, run the two check commands under **South African
+date and time defaults** (Part 5). If the trigger is missing, or an upgrade
+changed how `prefs` is stored, re-run the install block there.
 
 Don't run `docker system prune` or `docker volume prune` on a shared VM: they
 act on every stack, not just the wiki.
