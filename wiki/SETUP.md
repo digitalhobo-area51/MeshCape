@@ -26,9 +26,9 @@ Internet ──► Cloudflare (wiki.meshcape.io) ══ tunnel ══► cloudfl
 
 ## Part 1 — Pre-flight check on the existing VM (read-only)
 
-The wiki adds three small containers (Wiki.js, PostgreSQL, cloudflared),
-capped at about **1.4 GB RAM** and **2.5 CPUs** in total, and needs 3–5 GB of
-disk. Before adding anything, check the VM can take it.
+The wiki adds three containers (Wiki.js 3, PostgreSQL 18, cloudflared),
+capped at about **2.2 GB RAM** and **2.5 CPUs** in total, and needs about
+5 GB of disk (the Wiki.js image alone is ~850 MB). Before adding anything, check the VM can take it.
 
 1. Take an **ESXi snapshot** of the VM first (host client → the VM →
    *Actions → Snapshots → Take snapshot*, name it `before-meshcape-wiki`).
@@ -86,6 +86,7 @@ for f in docker-compose.yml docker-compose.lan.yml .env.example backup.sh prefli
 done
 cp .env.example .env
 sed -i "s|^DB_PASSWORD=.*|DB_PASSWORD=$(openssl rand -hex 32)|" .env   # random DB password
+nano .env    # set ADMIN_EMAIL (your login) and ADMIN_PASS (a temporary password)
 ```
 
 If the pre-flight said port 3080 is taken, set another free port:
@@ -95,7 +96,7 @@ Start the database and wiki on your LAN only (no tunnel yet):
 
 ```sh
 docker compose -f docker-compose.yml -f docker-compose.lan.yml up -d db wiki
-docker compose logs -f wiki      # wait for "HTTP Server: [ RUNNING ]", then Ctrl+C
+docker compose logs -f wiki      # wait until it says the server is listening, then Ctrl+C
 ```
 
 **Check nothing else was disturbed:**
@@ -110,10 +111,11 @@ free -m                          # memory still comfortable
 If `diff` prints anything, a container that was running before isn't
 running now: stop here and use the undo below.
 
-Browse to `http://<vm-ip>:3080` and complete the setup screen:
-- **Admin email** and a strong password (save it in your password manager)
-- **Site URL:** `https://wiki.meshcape.io`
-- Untick telemetry if you prefer
+Browse to `http://<vm-ip>:3080` and log in with `ADMIN_EMAIL` and
+`ADMIN_PASS` from `.env`. Wiki.js 3 has no setup screen: the admin account is
+created from those two values on the first start. Then straight away:
+- change the admin password to a strong one (save it in your password manager)
+- *Administration* → set the site hostname / URL to `https://wiki.meshcape.io`
 
 ### Undo (if anything looks wrong)
 
@@ -152,8 +154,13 @@ rolls back anything else that changed on the VM since the snapshot.
 
 ## Part 5 — Configure Wiki.js for the community
 
-All in the **Administration** area (cog icon, top right). Menu names below
-are from Wiki.js 2.x.
+All in the **Administration** area. This is Wiki.js 3; some menu names may
+differ slightly from those below.
+
+### Behind the Cloudflare Tunnel
+
+*Security* → turn on **Trust X-Forwarded-\* Proxy Headers**. Wiki.js 3 needs
+this behind a proxy for logins, rate limiting and the audit log to work.
 
 ### Accounts — members sign up on the wiki
 
@@ -165,9 +172,6 @@ are from Wiki.js 2.x.
 *Security* → enable any CAPTCHA / bot-protection option offered for login and
 registration. On the Cloudflare side, also turn on **Security → Bots → Bot
 Fight Mode** for the meshcape.io zone.
-
-*Mail* → configure SMTP if you want verification and password-reset emails
-(any free transactional mail service works).
 
 ### Groups — who can do what
 
@@ -188,6 +192,15 @@ change the official preset.
 
 *General* → **Content License:** CC BY-SA 4.0. Contributors' edits stay open
 and reusable.
+
+### Email
+
+*Mail* → SMTP via Google Workspace: host `smtp.gmail.com`, port `465`, secure
+on, username `rob@bluebottle.co.za` with an app password, client hostname
+`bluebottle.co.za`, sender name `MeshCape Wiki`. Sender email is
+`rob@bluebottle.co.za` until `meshcape.io` is verified in Workspace, then
+`wiki@meshcape.io`. (Wiki.js 3.4+ also supports Google Workspace OAuth2 for
+mail instead of an app password.)
 
 ### Look and feel
 

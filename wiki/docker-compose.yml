@@ -1,4 +1,4 @@
-# MeshCape wiki — Wiki.js + PostgreSQL + Cloudflare Tunnel
+# MeshCape wiki — Wiki.js 3 + PostgreSQL 18 + Cloudflare Tunnel
 #
 # Usage (on the wiki VM):
 #   cp .env.example .env    # then fill in the values
@@ -20,14 +20,14 @@ name: meshcape-wiki
 
 services:
   db:
-    image: postgres:15-alpine
+    image: postgres:18-alpine   # Wiki.js 3 supports PostgreSQL 17 and 18 only
     restart: unless-stopped
     environment:
       POSTGRES_DB: wiki
       POSTGRES_USER: wikijs
       POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql   # PostgreSQL 18 images keep data under /var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U wikijs -d wiki"]
       interval: 10s
@@ -40,19 +40,21 @@ services:
       options: { max-size: "10m", max-file: "3" }
 
   wiki:
-    image: ghcr.io/requarks/wiki:2
+    image: ghcr.io/requarks/wiki:3   # follows the latest 3.x release; never use :latest
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
     environment:
-      DB_TYPE: postgres
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: wikijs
       DB_PASS: ${DB_PASSWORD}
       DB_NAME: wiki
-    mem_limit: 768m
+      # Root admin account, created on first start only (no effect afterwards).
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Set ADMIN_EMAIL in .env}
+      ADMIN_PASS: ${ADMIN_PASS:?Set ADMIN_PASS in .env}
+    mem_limit: 1536m   # Wiki.js 3 needs at least 1 GB
     cpus: 1.0
     logging:
       driver: json-file
@@ -73,4 +75,4 @@ services:
       options: { max-size: "10m", max-file: "3" }
 
 volumes:
-  db-data:
+  pgdata:

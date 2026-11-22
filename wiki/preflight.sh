@@ -8,7 +8,7 @@
 # Run it as your normal user (no sudo needed) and keep the output:
 #   bash preflight.sh | tee ~/meshcape-preflight-before.txt
 #
-# The wiki needs roughly: 1 GB RAM (capped at 1.4 GB), 3-5 GB disk,
+# The wiki needs roughly: 1-1.5 GB RAM (capped at 2.2 GB), 3-5 GB disk,
 # one free TCP port on the LAN for first-time setup (3080 by default).
 
 PORT="${WIKI_LAN_PORT:-3080}"
@@ -29,9 +29,9 @@ section "Memory"
 avail_mb=$(awk '/MemAvailable/ {print int($2/1024)}' /proc/meminfo)
 total_mb=$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo)
 info "Total: ${total_mb} MB   Available now: ${avail_mb} MB"
-if [ "${avail_mb:-0}" -ge 2048 ]; then ok "Plenty of free memory"
-elif [ "${avail_mb:-0}" -ge 1536 ]; then ok "Enough free memory (the wiki is capped at about 1.4 GB)"
-else warn "Less than 1.5 GB available: the wiki may squeeze what is already running"; fi
+if [ "${avail_mb:-0}" -ge 4096 ]; then ok "Plenty of free memory"
+elif [ "${avail_mb:-0}" -ge 2560 ]; then ok "Enough free memory (the wiki is capped at about 2.2 GB)"
+else warn "Less than 2.5 GB available: the wiki may squeeze what is already running"; fi
 swap_mb=$(awk '/SwapTotal/ {print int($2/1024)}' /proc/meminfo); info "Swap: ${swap_mb} MB"
 
 section "Disk"
