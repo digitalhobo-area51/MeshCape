@@ -11,6 +11,11 @@
   --mc-navy: #111827;
 }
 
+/* Wiki.js's built-in orange (Edit button, page properties pencil) in dark blue */
+html:root {
+  --color-deep-orange-9: #16232B;
+}
+
 /* Base type */
 body, .wiki-root {
   font-family: 'IBM Plex Sans', system-ui, sans-serif;
@@ -64,11 +69,17 @@ body, .wiki-root {
   font-weight: 600;
   color: var(--mc-ink);
 }
+/* Links in the site's dark blue, underlined so they still stand out */
 .page-contents a {
-  color: var(--mc-accent);
+  color: var(--mc-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(22, 35, 43, .45);
 }
 .page-contents a:hover {
-  color: var(--mc-accent-dark);
+  color: #2F6F8F;
+  text-decoration-color: currentColor;
 }
 .page-contents code,
 .page-contents pre,
