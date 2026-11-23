@@ -137,20 +137,30 @@ rolls back anything else that changed on the VM since the snapshot.
 2. **Networks → Tunnels → Create a tunnel** → *Cloudflared* → name it
    `meshcape-wiki`.
 3. On the *Install connector* screen choose **Docker**, and copy only the
-   long token after `--token`. Paste it as `TUNNEL_TOKEN` in `.env`.
-4. Next screen, **Public hostname**:
-   - Subdomain: `wiki` · Domain: `meshcape.io`
-   - Service type: `HTTP` · URL: `wiki:3000`
-5. On the VM, restart without the LAN override (so the wiki is only reachable
-   through the tunnel) and start everything:
+   long token after `--token` (paste it into a text editor first to check).
+   Don't run the `docker run` command shown: the compose file runs the
+   connector. In `.env` the line must read `TUNNEL_TOKEN=eyJ...` with no
+   quotes or spaces. "Provided Tunnel token is not valid" in
+   `docker compose logs tunnel` means it was pasted wrongly.
+4. Start the tunnel, keeping the LAN port as a fallback while testing:
    ```sh
    cd /opt/meshcape-wiki
-   docker compose down
-   docker compose up -d
-   docker compose ps     # db, wiki and tunnel should all be "running"
+   docker compose -f docker-compose.yml -f docker-compose.lan.yml up -d
+   docker compose logs tunnel --tail 10   # look for "Registered tunnel connection"
    ```
-6. Open **https://wiki.meshcape.io**. The tunnel shows *Healthy* in the
-   dashboard.
+5. In the tunnel's **Routes** tab → **Add route** → **Published application**:
+   subdomain `wiki`, domain `meshcape.io`, path empty, Service URL
+   `http://wiki:3000` (include `http://`).
+6. Open **https://wiki.meshcape.io**, then do the Part 5 settings marked
+   *(after the tunnel)*.
+7. Close the LAN port so the wiki is only reachable through the tunnel:
+   ```sh
+   cd /opt/meshcape-wiki
+   docker compose up -d   # without the LAN file; recreates only the wiki container
+   docker compose ps      # wiki's PORTS no longer shows 0.0.0.0:3080
+   ```
+   Wiki.js 3 takes about two minutes to start on this VM; Cloudflare shows
+   **502 Bad gateway** until it's ready.
 
 ## Part 5 — Configure Wiki.js for the community
 
@@ -159,8 +169,13 @@ differ slightly from those below.
 
 ### Behind the Cloudflare Tunnel
 
-*Security* → turn on **Trust X-Forwarded-\* Proxy Headers**. Wiki.js 3 needs
-this behind a proxy for logins, rate limiting and the audit log to work.
+*(after the tunnel)*
+- *Security* → turn on **Trust X-Forwarded-\* Proxy Headers**. Wiki.js 3
+  needs this behind a proxy for logins, rate limiting and the audit log.
+- *General* → **Site Hostname** `wiki.meshcape.io` (leave it `*` until the
+  tunnel works, or the LAN address stops matching the site).
+- *Mail* → **Default Base URL** `https://wiki.meshcape.io`.
+- Admin account → *Profile → Authentication* → turn on two-factor.
 
 ### Accounts — members sign up on the wiki
 
@@ -179,10 +194,14 @@ Fight Mode** for the meshcape.io zone.
 
 | Group | Purpose | Page rules |
 | --- | --- | --- |
-| **Guests** (built-in) | Anyone not logged in | Read pages, read assets, read comments |
+| **Guests** (built-in) | Anyone not logged in | **Allow** read pages, view assets, read comments |
 | **Members** | Default for new sign-ups | Read + **write pages**, upload assets, comment |
 | **Editors** | Trusted regulars | Members + manage/move/delete pages, history |
 | **Administrators** (built-in) | Rob | Everything |
+
+The built-in Guests rule starts as **Deny**: switch it to **Allow** (the
+red *Deny ▾* label on the rule) and save, or visitors are sent to the login
+page. Test in a private window.
 
 Optional: protect a few key pages (for example `/settings/recommended`) by
 adding a *Deny write* rule on that path for Members, so only Editors can
@@ -209,14 +228,24 @@ After **Apply**, reload the page (F5) to check every field kept its value.
 
 ### South African date and time defaults
 
-Wiki.js 3 has no admin setting for the timezone or date format new accounts
-get (they start on America/New_York, YYYY-MM-DD, 12h). Each user's choices are
-in the `prefs` JSON column of `wiki.users`. Visitors who aren't logged in use
-the `guest@example.com` account's settings.
+Wiki.js 3 has no admin screen for the timezone or date format new accounts
+get. The defaults are the `userDefaults` row in `wiki.settings` (stock:
+America/New_York, YYYY-MM-DD, 12h); each user's own choices are in the
+`prefs` JSON column of `wiki.users`. Changed on 2026-11-23:
 
-A database trigger sets new accounts to Africa/Johannesburg, DD/MM/YYYY and
-24h as they're created; members can still change their own afterwards.
-Installed on 2026-11-22:
+```sh
+docker exec meshcape-wiki-db-1 psql -U wikijs -d wiki -c "UPDATE wiki.settings SET value = '{\"timezone\": \"Africa/Johannesburg\", \"dateFormat\": \"DD/MM/YYYY\", \"timeFormat\": \"24h\"}' WHERE key='userDefaults';"
+docker restart meshcape-wiki-wiki-1
+```
+
+Visitors who aren't logged in still see dates in their browser's own format
+(e.g. "2026-11-22 at 3:03 PM" with US English). Neither `userDefaults`, the
+`guest@example.com` account's prefs nor the site config changes that; parked
+as cosmetic.
+
+As a backup, a database trigger also sets new accounts to
+Africa/Johannesburg, DD/MM/YYYY and 24h as they're created; members can still
+change their own afterwards. Installed on 2026-11-22:
 
 ```sh
 docker exec -i meshcape-wiki-db-1 psql -U wikijs -d wiki <<'SQL'
@@ -244,6 +273,7 @@ docker restart meshcape-wiki-wiki-1
 Check it's still in place (should list `meshcape_default_prefs`):
 
 ```sh
+docker exec meshcape-wiki-db-1 psql -U wikijs -d wiki -c "SELECT value FROM wiki.settings WHERE key='userDefaults';"
 docker exec meshcape-wiki-db-1 psql -U wikijs -d wiki -c "SELECT tgname FROM pg_trigger WHERE tgname = 'meshcape_default_prefs';"
 docker exec meshcape-wiki-db-1 psql -U wikijs -d wiki -c "SELECT email, prefs->>'timezone' AS tz, prefs->>'dateFormat' AS date, prefs->>'timeFormat' AS time FROM wiki.users;"
 ```
@@ -301,7 +331,7 @@ cd /opt/meshcape-wiki
 docker compose pull && docker compose up -d   # only recreates meshcape-wiki containers
 ```
 
-After every Wiki.js upgrade, run the two check commands under **South African
+After every Wiki.js upgrade, run the three check commands under **South African
 date and time defaults** (Part 5). If the trigger is missing, or an upgrade
 changed how `prefs` is stored, re-run the install block there.
 
@@ -310,7 +340,7 @@ act on every stack, not just the wiki.
 
 ## Moderation checklist
 
-- Watch **Administration → Pages** / page **History** for recent edits;
+- Watch page **History** (clock icon on each page) for recent edits;
   any revision can be restored.
 - Remove spam accounts in **Users**; move trusted people to **Editors**.
 - Community rule of thumb: no exact home locations, no local IPs or tokens,
