@@ -1,5 +1,6 @@
 ---
 // Three equal content panels under the radio table: icon, title, short description.
+import { site } from '../data/site';
 const mapUrl = 'https://map.meshcore.io/?lat=-33.5379&lon=19.2532&zoom=8';
 ---
 <section class="panels" aria-label="Highlights">
@@ -10,12 +11,12 @@ const mapUrl = 'https://map.meshcore.io/?lat=-33.5379&lon=19.2532&zoom=8';
     <p class="panel-body">The global home of MeshCore, with the official apps, firmware and documentation.</p>
   </a>
 
-  <article class="panel">
+  <a class="panel panel-link" href={site.wikiUrl}>
     <!-- people -->
     <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5" /><path d="M15.5 4.8a3.5 3.5 0 0 1 0 6.4M17.5 14.8c2.2.6 3.6 2.3 4 5.2" /></svg>
     <h2 class="panel-title">Local Community Wiki</h2>
     <p class="panel-body">Engage with the local community and share experiences in the mesh.</p>
-  </article>
+  </a>
 
   <a class="panel panel-link" href={mapUrl} target="_blank" rel="noopener">
     <!-- folded map with pin -->
