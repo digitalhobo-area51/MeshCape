@@ -280,9 +280,15 @@ docker exec meshcape-wiki-db-1 psql -U wikijs -d wiki -c "SELECT email, prefs->>
 
 ### Look and feel
 
-*Theme* → dark/light as preferred. *General* → site title `MeshCape Wiki`,
-logo URL `https://meshcape.io/favicon.svg`. *Navigation* → add a link back to
-`https://meshcape.io`.
+*Theme* → light mode, colours as set. The wiki is styled to match meshcape.io
+by two files in `wiki/theme/`:
+- `meshcape-wiki.css` → *Theme → CSS Override* (fonts, colours, margins,
+  hides the sidebar)
+- `meshcape-menu.html` → *Theme → Head HTML Injection* (the round menu
+  button at top right, replacing the sidebar)
+
+The menu lists wiki pages by hand: when a page is added or moved, edit
+`SECTIONS` in `meshcape-menu.html`, then paste it in again and **Apply**.
 
 ## Part 6 — Mirror pages to GitHub (Git storage)
 
@@ -331,7 +337,12 @@ cd /opt/meshcape-wiki
 docker compose pull && docker compose up -d   # only recreates meshcape-wiki containers
 ```
 
-After every Wiki.js upgrade, run the three check commands under **South African
+After every Wiki.js upgrade, open the wiki and check the round menu button
+still appears at top right and the sidebar is still hidden. The theme files
+rely on Wiki.js's own class names, which an upgrade can change; if it breaks,
+clear *Head HTML Injection* and delete the "No sidebar" block from *CSS
+Override* to get the sidebar back until it's fixed. Also run
+the three check commands under **South African
 date and time defaults** (Part 5). If the trigger is missing, or an upgrade
 changed how `prefs` is stored, re-run the install block there.
 
