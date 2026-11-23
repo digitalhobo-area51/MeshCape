@@ -76,6 +76,121 @@ body, .wiki-root {
   font-family: 'IBM Plex Mono', ui-monospace, monospace;
 }
 
+/* No sidebar: navigation is the round menu button (Head HTML Injection) */
+.w-layout--page > .w-drawer--left {
+  display: none !important;
+}
+.page-header-icon {
+  display: none !important;
+}
+
+/* 40px side margins like meshcape.io (desktop) */
+@media (min-width: 761px) {
+  .page-container-body {
+    padding: 28px 40px 40px !important;
+  }
+  .page-breadcrumbs {
+    padding-left: 32px !important;
+    padding-right: 40px !important;
+  }
+  .page-header {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+/* Round menu button and panel, copied from meshcape.io */
+.mc-menu {
+  position: relative;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+.mc-menu-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  background: var(--mc-paper);
+  color: var(--mc-navy);
+  border: none;
+}
+.mc-menu-btn:hover,
+.mc-menu.open .mc-menu-btn {
+  background: #FFFFFF;
+}
+.mc-menu-btn:focus-visible {
+  outline: 3px solid var(--mc-paper);
+  outline-offset: 2px;
+}
+.mc-menu-panel {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  padding-top: 10px;
+  min-width: 260px;
+  z-index: 5000;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity .15s ease, transform .15s ease, visibility 0s linear .15s;
+}
+.mc-menu:hover .mc-menu-panel,
+.mc-menu:focus-within .mc-menu-panel,
+.mc-menu.open .mc-menu-panel {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity .15s ease, transform .15s ease;
+}
+.mc-menu-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  background: var(--mc-paper-raised);
+  border: 2px solid var(--mc-ink);
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(17, 24, 39, .18);
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+}
+.mc-menu-panel a {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  white-space: nowrap;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 15px;
+  color: var(--mc-ink);
+  text-decoration: none;
+}
+.mc-menu-panel a:hover {
+  background: var(--mc-ink);
+  color: var(--mc-paper);
+}
+.mc-menu-panel a[aria-current="page"] {
+  font-weight: 600;
+}
+.mc-menu-label {
+  padding: 10px 14px 4px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #44545D;
+}
+.mc-menu-sep {
+  height: 1.5px;
+  margin: 6px 8px;
+  background: rgba(22, 35, 43, .15);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mc-menu-panel { transition: none; }
+}
+
 /* Tables: rounded like the radio settings table on meshcape.io */
 .page-contents table {
   border-radius: 16px;

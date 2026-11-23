@@ -1,0 +1,98 @@
+<script>
+/* MeshCape wiki: round menu button like meshcape.io, replacing the sidebar.
+   Paste into Administration -> Theme -> Head HTML Injection.
+   Edit SECTIONS when wiki pages are added or moved. */
+(function () {
+  var SECTIONS = [
+    ['Start here', '/home'],
+    ['Cape Town region & coverage', '/cape-town/region'],
+    ['Recommended settings', '/settings/recommended'],
+    ['Companion nodes', '/companion'],
+    ['Repeaters', '/repeaters'],
+    ['Repeater deployment checklist', '/repeaters/deployment-checklist'],
+    ['Hardware builds', '/hardware/builds'],
+    ['Home Assistant', '/home-assistant'],
+    ['Troubleshooting', '/troubleshooting'],
+    ['Contributing', '/contributing']
+  ];
+  var SITE = [
+    ['MeshCape home', 'https://meshcape.io/', false],
+    ['Get Started', 'https://meshcape.io/#get-started', false],
+    ['Official MeshCore Site', 'https://meshcore.io/', true],
+    ['Dynamic Mesh Map', 'https://map.meshcore.io/?lat=-33.5379&lon=19.2532&zoom=8', true]
+  ];
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.textContent = text;
+    return e;
+  }
+
+  function build() {
+    var menu = el('div', 'mc-menu');
+    var btn = el('button', 'mc-menu-btn');
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Menu');
+    btn.setAttribute('aria-haspopup', 'true');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+    var panel = el('nav', 'mc-menu-panel');
+    panel.setAttribute('aria-label', 'Main');
+    var list = el('ul');
+
+    function heading(text) { var li = el('li', 'mc-menu-label', text); list.appendChild(li); }
+    function link(label, href, external) {
+      var li = el('li'), a = el('a', null, label);
+      a.href = href;
+      if (external) { a.target = '_blank'; a.rel = 'noopener'; }
+      li.appendChild(a);
+      list.appendChild(li);
+    }
+
+    heading('Wiki');
+    SECTIONS.forEach(function (s) { link(s[0], s[1], false); });
+    list.appendChild(el('li', 'mc-menu-sep'));
+    heading('meshcape.io');
+    SITE.forEach(function (s) { link(s[0], s[1], s[2]); });
+    panel.appendChild(list);
+    menu.appendChild(btn);
+    menu.appendChild(panel);
+
+    function markCurrent() {
+      var path = location.pathname.replace(/\/$/, '') || '/home';
+      list.querySelectorAll('a').forEach(function (a) {
+        if (a.getAttribute('href') === path) a.setAttribute('aria-current', 'page');
+        else a.removeAttribute('aria-current');
+      });
+    }
+    function set(open) {
+      menu.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+      if (open) markCurrent();
+    }
+    btn.addEventListener('click', function (e) { e.stopPropagation(); set(!menu.classList.contains('open')); });
+    menu.addEventListener('mouseenter', markCurrent);
+    document.addEventListener('click', function (e) { if (!menu.contains(e.target)) set(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.classList.contains('open')) { set(false); btn.focus(); } });
+    markCurrent();
+    return menu;
+  }
+
+  var menu = null;
+  function insert() {
+    var bars = document.querySelectorAll('.site-header .w-toolbar');
+    var bar = bars[bars.length - 1];
+    if (!bar) return;
+    if (!menu) menu = build();
+    if (menu.parentNode !== bar) bar.appendChild(menu);
+  }
+
+  function start() {
+    insert();
+    new MutationObserver(insert).observe(document.body, { childList: true, subtree: true });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
+</script>
