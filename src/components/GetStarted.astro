@@ -1,6 +1,6 @@
 ---
 // "How to get started": three numbered steps joined by a line, each with a button to meshcore.io.
-import { site } from '../data/site';
+import { wiki } from '../data/site';
 const steps = [
   {
     title: 'Get the App',
@@ -34,7 +34,7 @@ const steps = [
         <h3 class="step-title">{s.title}</h3>
         <p class="step-body">{s.body}</p>
         <a class="step-btn" href={s.href} target="_blank" rel="noopener">{s.cta}</a>
-        {i === 1 && <p class="step-note">* check our <a href={site.wikiUrl}>wiki</a> for local suppliers</p>}
+        {i === 1 && <p class="step-note">* check our <a href={wiki('/local-suppliers')}>wiki</a> for local suppliers</p>}
       </li>
     ))}
   </ol>
