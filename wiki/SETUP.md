@@ -287,8 +287,9 @@ by two files in `wiki/theme/`:
 - `meshcape-menu.html` → *Theme → Head HTML Injection* (the round menu
   button at top right, replacing the sidebar)
 
-The menu lists wiki pages by hand: when a page is added or moved, edit
-`SECTIONS` in `meshcape-menu.html`, then paste it in again and **Apply**.
+The menu has two links (MeshCape.io Home, MeshCape wiki Main Page). To change
+them, edit `ITEMS` in `meshcape-menu.html`, then paste it in again and
+**Apply**.
 
 ## Part 6 — Mirror pages to GitHub (Git storage)
 

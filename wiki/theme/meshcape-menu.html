@@ -1,25 +1,11 @@
 <script>
 /* MeshCape wiki: round menu button like meshcape.io, replacing the sidebar.
    Paste into Administration -> Theme -> Head HTML Injection.
-   Edit SECTIONS when wiki pages are added or moved. */
+   Edit ITEMS to change the menu. */
 (function () {
-  var SECTIONS = [
-    ['Start here', '/home'],
-    ['Cape Town region & coverage', '/cape-town/region'],
-    ['Recommended settings', '/settings/recommended'],
-    ['Companion nodes', '/companion'],
-    ['Repeaters', '/repeaters'],
-    ['Repeater deployment checklist', '/repeaters/deployment-checklist'],
-    ['Hardware builds', '/hardware/builds'],
-    ['Home Assistant', '/home-assistant'],
-    ['Troubleshooting', '/troubleshooting'],
-    ['Contributing', '/contributing']
-  ];
-  var SITE = [
-    ['MeshCape home', 'https://meshcape.io/', false],
-    ['Get Started', 'https://meshcape.io/#get-started', false],
-    ['Official MeshCore Site', 'https://meshcore.io/', true],
-    ['Dynamic Mesh Map', 'https://map.meshcore.io/?lat=-33.5379&lon=19.2532&zoom=8', true]
+  var ITEMS = [
+    ['MeshCape.io Home', 'https://meshcape.io/'],
+    ['MeshCape wiki Main Page', '/home']
   ];
 
   function el(tag, cls, text) {
@@ -41,7 +27,6 @@
     panel.setAttribute('aria-label', 'Main');
     var list = el('ul');
 
-    function heading(text) { var li = el('li', 'mc-menu-label', text); list.appendChild(li); }
     function link(label, href, external) {
       var li = el('li'), a = el('a', null, label);
       a.href = href;
@@ -50,11 +35,7 @@
       list.appendChild(li);
     }
 
-    heading('Wiki');
-    SECTIONS.forEach(function (s) { link(s[0], s[1], false); });
-    list.appendChild(el('li', 'mc-menu-sep'));
-    heading('meshcape.io');
-    SITE.forEach(function (s) { link(s[0], s[1], s[2]); });
+    ITEMS.forEach(function (s) { link(s[0], s[1], false); });
     panel.appendChild(list);
     menu.appendChild(btn);
     menu.appendChild(panel);
