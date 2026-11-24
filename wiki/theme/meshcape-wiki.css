@@ -26,10 +26,45 @@ body, .wiki-root {
   font-family: 'Exo 2', 'IBM Plex Sans Condensed', sans-serif;
   font-style: italic;
   font-weight: 800;
-  font-size: 22px;
   letter-spacing: .03em;
   text-transform: uppercase;
   color: var(--mc-paper);
+}
+
+/* Header bar: same height, wordmark size and edge spacing as meshcape.io */
+.site-header .w-toolbar {
+  min-height: 76px !important;
+}
+.site-header .w-toolbar:first-child {
+  padding-left: 24px !important;
+}
+.site-header .w-toolbar:last-child {
+  padding-right: 28px !important;
+}
+.site-header .site-title {
+  font-size: 28.5px !important;
+  line-height: 1 !important;
+  height: auto !important;
+  position: relative;
+  top: -1px;
+}
+@media (max-width: 760px) {
+  .site-header .w-toolbar {
+    min-height: 49px !important;
+  }
+  .site-header .w-toolbar:first-child {
+    padding-left: 12px !important;
+  }
+  .site-header .w-toolbar:last-child {
+    padding-right: 16px !important;
+  }
+  .site-header .site-title {
+    font-size: 24px !important;
+  }
+  .mc-menu .mc-menu-btn {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 /* Page background: the site's paper colours instead of greys */
